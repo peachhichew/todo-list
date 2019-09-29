@@ -1,0 +1,34 @@
+{
+  "name": "todo-list",
+  "version": "1.0.0",
+  "description": "This is todo list app that uses a web API.",
+  "main": "server.js",
+  "scripts": {
+    "build": "babel ./client --out-file ./hosted/bundle.js",
+    "watch": "babel --watch ./client --out-file ./hosted/bundle.js",
+    "nodemon": "nodemon --watch ./src  --watch ./hosted ./src/server.js",
+    "start": "node ./src/server.js",
+    "pretest": "eslint ./src --fix",
+    "test": "echo \"Tests complete\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peachhichew/todo-list.git"
+  },
+  "author": "Sky Wan",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/peachhichew/todo-list/issues"
+  },
+  "homepage": "https://github.com/peachhichew/todo-list#readme",
+  "dependencies": {
+    "eslint": "^6.5.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-import": "^2.18.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "nodemon": "^1.19.3"
+  }
+}
