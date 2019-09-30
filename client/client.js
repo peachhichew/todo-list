@@ -1,7 +1,11 @@
+// https://www.w3schools.com/howto/howto_js_todolist.asp
+// https://www.w3schools.com/css/css_form.asp
+// https://www.w3schools.com/howto/howto_css_modals.asp
+
 // code for modal
 const modal = document.querySelector("#taskModal");
 const newTaskButton = document.querySelector("#newTaskButton");
-const span = document.querySelector("close")[0];
+const span = document.getElementsByClassName("close")[0];
 
 newTaskButton.onclick = () => {
   console.log("button clicked");
@@ -129,13 +133,12 @@ const requestUpdate = (e, userForm) => {
 };
 
 const init = () => {
-  const userForm = document.querySelector("#userForm");
-  const getUsers = e => requestUpdate(e, userForm);
-  userForm.addEventListener("submit", getUsers);
-
-  const nameForm = document.querySelector("#nameForm");
-  const addUser = e => sendPost(e, nameForm);
-  nameForm.addEventListener("submit", addUser);
+  // const userForm = document.querySelector("#userForm");
+  // const getUsers = e => requestUpdate(e, userForm);
+  // userForm.addEventListener("submit", getUsers);
+  // const nameForm = document.querySelector("#nameForm");
+  // const addUser = e => sendPost(e, nameForm);
+  // nameForm.addEventListener("submit", addUser);
 };
 
 window.onload = init;

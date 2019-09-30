@@ -1,9 +1,13 @@
 "use strict";
 
+// https://www.w3schools.com/howto/howto_js_todolist.asp
+// https://www.w3schools.com/css/css_form.asp
+// https://www.w3schools.com/howto/howto_css_modals.asp
+
 // code for modal
 var modal = document.querySelector("#taskModal");
 var newTaskButton = document.querySelector("#newTaskButton");
-var span = document.querySelector("close")[0];
+var span = document.getElementsByClassName("close")[0];
 
 newTaskButton.onclick = function () {
   console.log("button clicked");
@@ -142,17 +146,12 @@ var requestUpdate = function requestUpdate(e, userForm) {
 };
 
 var init = function init() {
-  var userForm = document.querySelector("#userForm");
-  var getUsers = function getUsers(e) {
-    return requestUpdate(e, userForm);
-  };
-  userForm.addEventListener("submit", getUsers);
-
-  var nameForm = document.querySelector("#nameForm");
-  var addUser = function addUser(e) {
-    return sendPost(e, nameForm);
-  };
-  nameForm.addEventListener("submit", addUser);
+  // const userForm = document.querySelector("#userForm");
+  // const getUsers = e => requestUpdate(e, userForm);
+  // userForm.addEventListener("submit", getUsers);
+  // const nameForm = document.querySelector("#nameForm");
+  // const addUser = e => sendPost(e, nameForm);
+  // nameForm.addEventListener("submit", addUser);
 };
 
 window.onload = init;

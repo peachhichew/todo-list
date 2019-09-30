@@ -47,13 +47,14 @@ const handleGet = (request, response, parsedUrl) => {
     jsonHandler.getUsers(request, response);
   } else if (parsedUrl.pathname === "/notReal") {
     jsonHandler.notReal(request, response);
-  } else if (parsedUrl === "/bundle.js") {
+  } else if (parsedUrl.pathname === "/bundle.js") {
     htmlHandler.getBundle(request, response);
   } else if (
     parsedUrl.pathname !== "/style.css" &&
     parsedUrl.pathname !== "/getUsers" &&
     parsedUrl.pathname !== "/notReal" &&
-    parsedUrl.pathname !== "/"
+    parsedUrl.pathname !== "/" &&
+    parsedUrl.pathname !== "/bundle.js"
   ) {
     jsonHandler.notReal(request, response);
   } else {
