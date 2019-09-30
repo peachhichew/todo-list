@@ -1,3 +1,25 @@
+// code for modal
+const modal = document.querySelector("#taskModal");
+const newTaskButton = document.querySelector("#newTaskButton");
+const span = document.querySelector("close")[0];
+
+newTaskButton.onclick = () => {
+  console.log("button clicked");
+  modal.style.display = "block";
+};
+
+span.onclick = () => {
+  modal.style.display = "none";
+};
+
+window.onclick = e => {
+  if (e.target == modal) {
+    modal.style.display = "none";
+  }
+};
+
+alert("helo");
+
 const parseJSON = (xhr, content) => {
   console.dir("parseJSON");
   const obj = JSON.parse(xhr.response);

@@ -1,5 +1,27 @@
 "use strict";
 
+// code for modal
+var modal = document.querySelector("#taskModal");
+var newTaskButton = document.querySelector("#newTaskButton");
+var span = document.querySelector("close")[0];
+
+newTaskButton.onclick = function () {
+  console.log("button clicked");
+  modal.style.display = "block";
+};
+
+span.onclick = function () {
+  modal.style.display = "none";
+};
+
+window.onclick = function (e) {
+  if (e.target == modal) {
+    modal.style.display = "none";
+  }
+};
+
+alert("helo");
+
 var parseJSON = function parseJSON(xhr, content) {
   console.dir("parseJSON");
   var obj = JSON.parse(xhr.response);

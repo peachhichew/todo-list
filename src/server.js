@@ -50,7 +50,7 @@ const handleGet = (request, response, parsedUrl) => {
   } else if (parsedUrl === "/bundle.js") {
     htmlHandler.getBundle(request, response);
   } else if (
-    parsedUrl.pathname !== "./style.css" &&
+    parsedUrl.pathname !== "/style.css" &&
     parsedUrl.pathname !== "/getUsers" &&
     parsedUrl.pathname !== "/notReal" &&
     parsedUrl.pathname !== "/"
