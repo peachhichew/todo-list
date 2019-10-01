@@ -33,7 +33,6 @@ const handlePost = (request, response, parsedUrl) => {
       // combine to byte array and convert it to a string
       const bodyString = Buffer.concat(body).toString();
       const bodyParams = query.parse(bodyString);
-      console.log("res", res);
 
       jsonHandler.addTodo(request, res, bodyParams);
     });
