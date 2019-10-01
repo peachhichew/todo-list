@@ -8,7 +8,7 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 // handle POST requests
 const handlePost = (request, response, parsedUrl) => {
-  if (parsedUrl.pathname === "/addUser") {
+  if (parsedUrl.pathname === "/addTodo") {
     const res = response;
 
     // uploads come in as a byte stream that we need to
@@ -33,8 +33,9 @@ const handlePost = (request, response, parsedUrl) => {
       // combine to byte array and convert it to a string
       const bodyString = Buffer.concat(body).toString();
       const bodyParams = query.parse(bodyString);
+      console.log("res", res);
 
-      jsonHandler.addUser(request, res, bodyParams);
+      jsonHandler.addTodo(request, res, bodyParams);
     });
   }
 };
@@ -43,8 +44,8 @@ const handlePost = (request, response, parsedUrl) => {
 const handleGet = (request, response, parsedUrl) => {
   if (parsedUrl.pathname === "/style.css") {
     htmlHandler.getCSS(request, response);
-  } else if (parsedUrl.pathname === "/getUsers") {
-    jsonHandler.getUsers(request, response);
+  } else if (parsedUrl.pathname === "/getTodos") {
+    jsonHandler.getTodos(request, response);
   } else if (parsedUrl.pathname === "/notReal") {
     jsonHandler.notReal(request, response);
   } else if (parsedUrl.pathname === "/bundle.js") {
@@ -63,8 +64,8 @@ const handleGet = (request, response, parsedUrl) => {
 };
 
 const handleHead = (request, response, parsedUrl) => {
-  if (parsedUrl.pathname === "/getUsers") {
-    jsonHandler.getUsersMeta(request, response);
+  if (parsedUrl.pathname === "/getTodos") {
+    jsonHandler.getTodosMeta(request, response);
   } else if (parsedUrl.pathname === "/notReal") {
     jsonHandler.notRealMeta(request, response);
   } else if (

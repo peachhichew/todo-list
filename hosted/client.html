@@ -6,67 +6,72 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <title>today's todos</title>
-  <link rel="stylesheet" type="text/css" href="/style.css">
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
-</head>
-<body>
-  <section id="top">
-    <div id="test">
-      <h3>todo list</h3>
-      <button id="newTaskButton">+ new task</button>
-    </div>
-  </section>
-  <div id="taskModal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <input type="text" id="taskName" name="taskName" placeholder="task name">
-      
-      <div class="formElements">
-        <label for="dueDate">due date: </label>
-        <input type="date" id="dueDate" name="dueDate">
-  
-        <label for="status" class="statusLabel">status: </label>
-        <select id="status">
-          <option value="notStarted">not started</option>
-          <option value="inProgress">in progress</option>
-          <option value="done">done</option>
-        </select>
+  <head>
+    <title>today's todos</title>
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+  </head>
+  <body>
+    <section id="top">
+      <div id="test">
+        <h3>todo list</h3>
+        <button id="newTaskButton">+ new task</button>
       </div>
+    </section>
+    <div id="taskModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <form id="todoForm" action="/addTodo" method="post">
+          <input
+            type="text"
+            id="taskName"
+            name="taskName"
+            placeholder="task name"
+          />
 
-      <!-- <label for="taskDescription">description: </label> -->
-      <textarea placeholder="task description..."></textarea>
+          <div class="formElements">
+            <label for="dueDate">due date: </label>
+            <input type="date" id="dueDate" name="dueDate" />
 
-      <div id="checklist" class="header">
-        <label for="checklist">checklist: </label>
+            <label for="status" class="statusLabel">status: </label>
+            <select id="status">
+              <option value="notStarted">not started</option>
+              <option value="inProgress">in progress</option>
+              <option value="done">done</option>
+            </select>
+          </div>
 
-        <!-- <input type="checkbox" name="checkitem1" value="item1">item 1<br>
-        <input type="checkbox" name="checkitem2" value="item2">item 2<br>
-        <input type="checkbox" name="checkitem3" value="item3">item 3<br> -->
-        <ul id="myChecklist">
-          <li>Hit the gym</li>
-          <li class="checked">Pay bills</li>
-          <li>Buy eggs</li>
-          <li>Read a book</li>
-          <!-- <li>
-            <input type="text" id="addChecklistItem" placeholder="add an item...">
-            <span onclick="newElement()" class="addBtn">Add</span>
-          </li> -->
-        </ul>
-        <div id="addItem">
-          <input type="text" id="addChecklistItem" placeholder="add an item...">
-          <span onclick="newElement()" class="addBtn">Add</span>
-        </div>
+          <!-- <label for="taskDescription">description: </label> -->
+          <textarea
+            placeholder="task description..."
+            id="taskDescription"
+          ></textarea>
+
+          <!-- <div id="checklist" class="header">
+            <label for="checklist">checklist: </label>
+            <ul id="myChecklist">
+              <li>Hit the gym</li>
+              <li class="checked">Pay bills</li>
+              <li>Buy eggs</li>
+              <li>Read a book</li>
+            </ul>
+            <div id="addItem">
+              <input
+                type="text"
+                id="addChecklistItem"
+                placeholder="add an item..."
+              />
+              <span onclick="newElement()" class="addBtn">Add</span>
+            </div>
+          </div> -->
+
+          <input type="submit" value="Submit" id="submitTask" />
+        </form>
       </div>
-
-      <input type="submit" value="Submit" id="submitTask">
     </div>
-  </div>
-  <section id="content">
-  </section>
-  <!-- <section id="top">
+    <section id="content"></section>
+    <!-- <section id="top">
     <h3>POST Status Code Tests</h3>
     <form id="nameForm" action="/addUser" method="post">
       <label for="name">Name: </label>
@@ -89,6 +94,6 @@
   </section>
   <section id="content">
   </section> -->
-  <script src="bundle.js"></script>
-</body>
+    <script src="bundle.js"></script>
+  </body>
 </html>

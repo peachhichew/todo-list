@@ -6,6 +6,7 @@
 const modal = document.querySelector("#taskModal");
 const newTaskButton = document.querySelector("#newTaskButton");
 const span = document.getElementsByClassName("close")[0];
+const submitTask = document.querySelector("#submitTask");
 
 newTaskButton.onclick = () => {
   console.log("button clicked");
@@ -22,7 +23,9 @@ window.onclick = e => {
   }
 };
 
-alert("helo");
+submitTask.onclick = () => {
+  modal.style.display = "none";
+};
 
 const parseJSON = (xhr, content) => {
   console.dir("parseJSON");
@@ -48,7 +51,7 @@ const handleResponse = (xhr, parseResponse) => {
       content.innerHTML = `<b>Success</b>`;
       break;
     case 201: // created
-      content.innerHTML = `<b>Create</b>`;
+      content.innerHTML = `<div><p>New Task Here</p></div>`;
       break;
     case 204: // updated
       content.innerHTML = `<b>Updated (No Content) </b)`;
@@ -76,23 +79,28 @@ const handleResponse = (xhr, parseResponse) => {
 };
 
 // send post request
-const sendPost = (e, nameForm) => {
+const sendPost = (e, taskForm) => {
+  console.log("in sendPost");
   // grab the form's action (url) and method (POST)
-  const nameAction = nameForm.getAttribute("action");
-  const nameMethod = nameForm.getAttribute("method");
+  const taskAction = taskForm.getAttribute("action");
+  const taskMethod = taskForm.getAttribute("method");
 
-  // grab age and name fields
-  const nameField = nameForm.querySelector("#nameField");
-  const ageField = nameForm.querySelector("#ageField");
+  // grab fields from the form
+  const taskNameField = taskForm.querySelector("#taskName");
+  const dueDateField = taskForm.querySelector("#dueDate");
+  const statusField = taskForm.querySelector("#status");
+  // const checklistField = document.querySelector("#checklist");
+  const taskDescriptionField = taskForm.querySelector("#taskDescription");
 
   // create an ajax request
   const xhr = new XMLHttpRequest();
-  xhr.open(nameMethod, nameAction);
+  xhr.open(taskMethod, taskAction);
   xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhr.setRequestHeader("Accept", "application/json");
   xhr.onload = () => handleResponse(xhr);
 
-  const formData = `name=${nameField.value}&age=${ageField.value}`;
+  const formData = `taskName=${taskNameField.value}&dueDate=${dueDateField.value}&status=${statusField.value}&taskDescription=${taskDescriptionField.value}`;
+  console.dir("formData: ", formData);
   xhr.send(formData);
   // prevent the browser from changing the page (default behavior)
   e.preventDefault();
@@ -100,21 +108,31 @@ const sendPost = (e, nameForm) => {
 };
 
 // function to send request
-const requestUpdate = (e, userForm) => {
-  const url = userForm.querySelector("#urlField").value;
-  const method = userForm.querySelector("#methodSelect").value;
+const requestUpdate = (e, taskForm) => {
+  // const url = userForm.querySelector("#urlField").value;
+  // const method = userForm.querySelector("#methodSelect").value;
+
+  // // grab the form's action (url) and method (POST)
+  // const nameAction = nameForm.getAttribute("action");
+  // const nameMethod = nameForm.getAttribute("method");
+
+  // // grab age and name fields
+  // const nameField = nameForm.querySelector("#nameField");
+  // const ageField = nameForm.querySelector("#ageField");
 
   // grab the form's action (url) and method (POST)
-  const nameAction = nameForm.getAttribute("action");
-  const nameMethod = nameForm.getAttribute("method");
+  const taskAction = taskForm.getAttribute("action");
+  const method = taskForm.getAttribute("method");
 
-  // grab age and name fields
-  const nameField = nameForm.querySelector("#nameField");
-  const ageField = nameForm.querySelector("#ageField");
+  // grab fields from the form
+  const taskNameField = taskForm.querySelector("#taskName");
+  const dueDateField = taskForm.querySelector("#dueDate");
+  const statusField = taskForm.querySelector("#status");
+  // const checklistField = taskForm.querySelector("#checklist");
 
   // create an ajax request
   const xhr = new XMLHttpRequest();
-  xhr.open(method, url);
+  xhr.open(method, taskAction);
   xhr.setRequestHeader("Accept", "application/json");
 
   // check if GET or HEAD request
@@ -139,6 +157,10 @@ const init = () => {
   // const nameForm = document.querySelector("#nameForm");
   // const addUser = e => sendPost(e, nameForm);
   // nameForm.addEventListener("submit", addUser);
+
+  const taskForm = document.querySelector("#todoForm");
+  const addTodo = e => sendPost(e, taskForm);
+  taskForm.addEventListener("submit", addTodo);
 };
 
 window.onload = init;
