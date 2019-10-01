@@ -77,7 +77,8 @@ const handleResponse = (xhr, parseResponse) => {
     console.dir(obj);
     content.innerHTML += `<div class="single-todo" id="single-todo">
     <h3 class="taskName-content">${obj.taskName}</h3>
-    <div class="status-and-dueDate">due date: ${obj.dueDate}</p>
+    <div class="status-and-dueDate">
+      <p class="dueDate-content">due date: ${obj.dueDate}</p>
       <p class="status-content">status: ${obj.status}</p>
     </div>
     <p class="taskDescription-content">${obj.taskDescription}</p>

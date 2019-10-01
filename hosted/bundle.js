@@ -82,7 +82,7 @@ var handleResponse = function handleResponse(xhr, parseResponse) {
   } else if (typeof parseResponse === "undefined") {
     var obj = JSON.parse(xhr.response);
     console.dir(obj);
-    content.innerHTML += "<div class=\"single-todo\" id=\"single-todo\">\n    <h3 class=\"taskName-content\">" + obj.taskName + "</h3>\n    <div class=\"status-and-dueDate\">due date: " + obj.dueDate + "</p>\n      <p class=\"status-content\">status: " + obj.status + "</p>\n    </div>\n    <p class=\"taskDescription-content\">" + obj.taskDescription + "</p>\n  </div>";
+    content.innerHTML += "<div class=\"single-todo\" id=\"single-todo\">\n    <h3 class=\"taskName-content\">" + obj.taskName + "</h3>\n    <div class=\"status-and-dueDate\">\n      <p class=\"dueDate-content\">due date: " + obj.dueDate + "</p>\n      <p class=\"status-content\">status: " + obj.status + "</p>\n    </div>\n    <p class=\"taskDescription-content\">" + obj.taskDescription + "</p>\n  </div>";
   }
 };
 
