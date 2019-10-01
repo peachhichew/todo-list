@@ -71,24 +71,28 @@ const addTodo = (request, response, body) => {
   let responseCode = 201;
 
   // if task already exists, switch to 204 updated status
-  if (users[body.taskName]) {
+  if (todos[body.taskName]) {
     responseCode = 204;
   } else {
     // else create a new user obj with that name
-    users[body.taskName] = {};
+    todos[body.taskName] = {};
   }
 
   // add or update fields for this task name
-  users[body.taskName].taskName = body.taskName;
-  users[body.taskName].dueDate = body.dueDate;
-  users[body.taskName].status = body.status;
-  users[body.taskName].taskDescription = body.taskDescription;
-  // users[body.taskName].checklist = body.checklist;
+  todos[body.taskName].taskName = body.taskName;
+  todos[body.taskName].dueDate = body.dueDate;
+  todos[body.taskName].status = body.status;
+  todos[body.taskName].taskDescription = body.taskDescription;
+  // todos[body.taskName].checklist = body.checklist;
 
   // if the response is created, then change the message
   // and sent response with a message
   if (responseCode === 201) {
     responseJSON.message = "Created Successfully";
+    responseJSON.taskName = body.taskName;
+    responseJSON.dueDate = body.dueDate;
+    responseJSON.status = body.status;
+    responseJSON.taskDescription = body.taskDescription;
     return respondJSON(request, response, responseCode, responseJSON);
   }
 

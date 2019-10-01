@@ -14,18 +14,23 @@ html, body {
   border: 1px solid black;
 }
 
-#test {
+#nav {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-self: center;
   margin: 0 auto;
   border: 1px solid red;
+  width: 75%;
 }
 
-#newTaskButton {
+#newTaskButton, #loadTodosButton {
   margin: auto 0;
   height: 25px;
+}
+
+#loadTodos {
+  margin: auto 0;
 }
 
 #top h1 {

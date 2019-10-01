@@ -55,7 +55,7 @@ var handleResponse = function handleResponse(xhr, parseResponse) {
       break;
     case 201:
       // created
-      content.innerHTML = "<div><p>New Task Here</p></div>";
+      content.innerHTML += "<b>Created Successfully</b>";
       break;
     case 204:
       // updated
@@ -74,6 +74,7 @@ var handleResponse = function handleResponse(xhr, parseResponse) {
       break;
   }
   console.log("parseResponse: ", parseResponse);
+  console.log("xhr.response: ", xhr.response);
 
   // if we are expecting a response body (not from HEAD request), parse it
   if (parseResponse) {
@@ -81,7 +82,7 @@ var handleResponse = function handleResponse(xhr, parseResponse) {
   } else if (typeof parseResponse === "undefined") {
     var obj = JSON.parse(xhr.response);
     console.dir(obj);
-    content.innerHTML += "<p>Message: " + obj.message + "</p>";
+    content.innerHTML += "<div class=\"single-todo\" id=\"single-todo\">\n    <h3 class=\"taskName-content\">" + obj.taskName + "</h3>\n    <div class=\"status-and-dueDate\">due date: " + obj.dueDate + "</p>\n      <p class=\"status-content\">status: " + obj.status + "</p>\n    </div>\n    <p class=\"taskDescription-content\">" + obj.taskDescription + "</p>\n  </div>";
   }
 };
 
@@ -131,17 +132,18 @@ var requestUpdate = function requestUpdate(e, taskForm) {
 
   // grab the form's action (url) and method (POST)
   var taskAction = taskForm.getAttribute("action");
-  var method = taskForm.getAttribute("method");
+  var taskMethod = taskForm.getAttribute("method");
 
   // grab fields from the form
   var taskNameField = taskForm.querySelector("#taskName");
   var dueDateField = taskForm.querySelector("#dueDate");
   var statusField = taskForm.querySelector("#status");
+  var taskDescription = taskForm.querySelector("#taskDescription");
   // const checklistField = taskForm.querySelector("#checklist");
 
   // create an ajax request
   var xhr = new XMLHttpRequest();
-  xhr.open(method, taskAction);
+  xhr.open(taskMethod, taskAction);
   xhr.setRequestHeader("Accept", "application/json");
 
   // check if GET or HEAD request

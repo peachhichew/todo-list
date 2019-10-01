@@ -14,9 +14,13 @@
   </head>
   <body>
     <section id="top">
-      <div id="test">
+      <div id="nav">
         <h3>todo list</h3>
-        <button id="newTaskButton">+ new task</button>
+        <form id="loadTodos" action="/getTodos" method="get">
+          <button id="loadTodosButton">&#8634; load todos</button>
+        </form>
+        
+        <button id="newTaskButton">+ new todo</button>
       </div>
     </section>
     <div id="taskModal" class="modal">
@@ -72,7 +76,7 @@
     </div>
     <section id="content">
       <div class="todo-content">
-        <div class="single-todo">
+        <div class="single-todo" id="single-todo">
           <h3 class="taskName-content">print resume</h3>
           <div class="status-and-dueDate">
             <p class="dueDate-content">due date: 09/25/2019</p>
