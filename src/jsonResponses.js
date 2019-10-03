@@ -1,5 +1,11 @@
-const users = {};
-const todos = {};
+const todos = {
+  printResume: {
+    taskName: "print resume",
+    dueDate: "2019-25-09",
+    status: "not started",
+    taskDescription: "head to library to print 20 copies of resume"
+  }
+};
 
 // function to response with a json object
 const respondJSON = (request, response, status, object) => {
@@ -23,15 +29,6 @@ const respondJSONMeta = (request, response, status) => {
   response.writeHead(status, headers);
   response.end();
 };
-
-// const getUsers = (request, response) => {
-//   const responseJSON = {
-//     users
-//   };
-
-//   // return status code 200 with message
-//   return respondJSON(request, response, 200, responseJSON);
-// };
 
 const getTodos = (request, response) => {
   const responseJSON = {
