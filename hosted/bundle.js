@@ -46,31 +46,33 @@ var parseJSON = function parseJSON(xhr, content) {
 };
 
 var handleResponse = function handleResponse(xhr, parseResponse) {
-  var content = document.querySelector("#content");
+  var responseStatus = document.querySelector("#response-status");
+  var todoLists = document.querySelector("#todo-lists");
 
   switch (xhr.status) {
     case 200:
       // success
-      content.innerHTML = "<b>Success</b>";
+      responseStatus.innerHTML = "<b>Todos retrieved successfully!</b>";
+      todoLists.innerHTML += "<div class=\"single-todo\" id=\"single-todo\">\n      <h3 class=\"taskName-content\">" + xhr.response.taskName + "</h3>\n      <div class=\"status-and-dueDate\">\n        <p class=\"dueDate-content\">due date: " + xhr.response.dueDate + "</p>\n        <p class=\"status-content\">status: " + xhr.response.status + "</p>\n      </div>\n      <p class=\"taskDescription-content\">" + xhr.response.taskDescription + "</p>\n    </div>";
       break;
     case 201:
       // created
-      content.innerHTML += "<b>Created Successfully</b>";
+      responseStatus.innerHTML = "Todo created successfully!";
       break;
     case 204:
       // updated
-      content.innerHTML = "<b>Updated (No Content) </b)";
+      responseStatus.innerHTML = "<b>Updated (No Content) </b)";
       return;
     case 400:
       // bad request
-      content.innerHTML = "<b>Bad Request</b>";
+      responseStatus.innerHTML = "<b>Bad Request</b>";
       break;
     case 404:
       // not found
-      content.innerHTML = "<b>Resource Not found</b>";
+      responseStatus.innerHTML = "<b>Resource Not found</b>";
       break;
     default:
-      content.innerHTML = "Error code not implemented by client.";
+      responseStatus.innerHTML = "Error code not implemented by client.";
       break;
   }
   console.log("parseResponse: ", parseResponse);
@@ -79,10 +81,11 @@ var handleResponse = function handleResponse(xhr, parseResponse) {
   // if we are expecting a response body (not from HEAD request), parse it
   if (parseResponse) {
     parseJSON(xhr, content);
+    console.log("get request");
   } else if (typeof parseResponse === "undefined") {
     var obj = JSON.parse(xhr.response);
     console.dir(obj);
-    content.innerHTML += "<div class=\"single-todo\" id=\"single-todo\">\n    <h3 class=\"taskName-content\">" + obj.taskName + "</h3>\n    <div class=\"status-and-dueDate\">\n      <p class=\"dueDate-content\">due date: " + obj.dueDate + "</p>\n      <p class=\"status-content\">status: " + obj.status + "</p>\n    </div>\n    <p class=\"taskDescription-content\">" + obj.taskDescription + "</p>\n  </div>";
+    todoLists.innerHTML += "<div class=\"single-todo\" id=\"single-todo\">\n    <h3 class=\"taskName-content\">" + obj.taskName + "</h3>\n    <div class=\"status-and-dueDate\">\n      <p class=\"dueDate-content\">due date: " + obj.dueDate + "</p>\n      <p class=\"status-content\">status: " + obj.status + "</p>\n    </div>\n    <p class=\"taskDescription-content\">" + obj.taskDescription + "</p>\n  </div>";
   }
 };
 
@@ -118,37 +121,21 @@ var sendPost = function sendPost(e, taskForm) {
 };
 
 // function to send request
-var requestUpdate = function requestUpdate(e, taskForm) {
-  // const url = userForm.querySelector("#urlField").value;
-  // const method = userForm.querySelector("#methodSelect").value;
+var requestUpdate = function requestUpdate(e, loadTodos) {
+  console.log("in requestUpdate()");
 
-  // // grab the form's action (url) and method (POST)
-  // const nameAction = nameForm.getAttribute("action");
-  // const nameMethod = nameForm.getAttribute("method");
-
-  // // grab age and name fields
-  // const nameField = nameForm.querySelector("#nameField");
-  // const ageField = nameForm.querySelector("#ageField");
-
-  // grab the form's action (url) and method (POST)
-  var taskAction = taskForm.getAttribute("action");
-  var taskMethod = taskForm.getAttribute("method");
-
-  // grab fields from the form
-  var taskNameField = taskForm.querySelector("#taskName");
-  var dueDateField = taskForm.querySelector("#dueDate");
-  var statusField = taskForm.querySelector("#status");
-  var taskDescription = taskForm.querySelector("#taskDescription");
-  // const checklistField = taskForm.querySelector("#checklist");
+  var url = loadTodos.getAttribute("action");
+  var method = loadTodos.getAttribute("method");
 
   // create an ajax request
   var xhr = new XMLHttpRequest();
-  xhr.open(taskMethod, taskAction);
+  xhr.open(method, url);
   xhr.setRequestHeader("Accept", "application/json");
 
   // check if GET or HEAD request
   if (method == "get") {
     // set onload to parse request and retrieve json message
+    console.log("get request submitted");
     xhr.onload = function () {
       return handleResponse(xhr, true);
     };
@@ -166,12 +153,12 @@ var requestUpdate = function requestUpdate(e, taskForm) {
 };
 
 var init = function init() {
-  // const userForm = document.querySelector("#userForm");
-  // const getUsers = e => requestUpdate(e, userForm);
-  // userForm.addEventListener("submit", getUsers);
-  // const nameForm = document.querySelector("#nameForm");
-  // const addUser = e => sendPost(e, nameForm);
-  // nameForm.addEventListener("submit", addUser);
+  var loadTodos = document.querySelector("#loadTodos");
+  console.log("inside init()");
+  var retrieveTodos = function retrieveTodos(e) {
+    return requestUpdate(e, loadTodos);
+  };
+  loadTodos.addEventListener("submit", retrieveTodos);
 
   var taskForm = document.querySelector("#todoForm");
   var addTodo = function addTodo(e) {
