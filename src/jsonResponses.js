@@ -43,9 +43,6 @@ const getTodos = (request, response) => {
 };
 
 // get meta info about the users and return a 200 status code
-// const getUsersMeta = (request, response) =>
-//   respondJSONMeta(request, response, 200);
-
 const getTodosMeta = (request, response) => {
   respondJSONMeta(request, response, 200);
 };

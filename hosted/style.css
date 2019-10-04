@@ -280,6 +280,7 @@ ul li.checked::before {
   /* margin-right: 15px; */
   margin-bottom: 15px;
   flex-basis: 40%;
+  border-radius: 5px;
 }
 
 .status-and-dueDate {

@@ -31,16 +31,40 @@ const parseJSON = (xhr, content) => {
   console.dir("parseJSON");
   const obj = JSON.parse(xhr.response);
   console.dir(obj);
-  console.dir(`obj["print resume"]: `, obj["print resume"]);
+
+  const todoLists = document.querySelector("#todo-lists");
+  const objKeys = Object.keys(obj["todos"]);
+  console.log("length", Object.keys(obj["todos"]).length);
+  console.log(Object.keys(obj["todos"]));
+  console.log(String(objKeys));
+  console.log("is string?", Object.keys(obj["todos"])[0] === typeof string);
+  console.log(obj.todos[objKeys[0]]["taskName"]);
 
   // if message in response, add it to the screen
   if (obj.message) {
     content.innerHTML += `<p>${obj.message}</p>`;
   }
 
-  if (obj.users) {
-    const users = JSON.stringify(obj.users);
-    content.innerHTML += `<p>${users}</p>`;
+  if (obj.todos) {
+    // iterate through the todos object
+    // for each key that exists, add a new element to the screen
+    todoLists.innerHTML = "";
+    for (let i = 0; i < Object.keys(obj["todos"]).length; i++) {
+      todoLists.innerHTML += `<div class="single-todo" id="single-todo">
+        <h3 class="taskName-content">${obj.todos[objKeys[i]]["taskName"]}</h3>
+        <div class="status-and-dueDate">
+          <p class="dueDate-content">due date: ${
+            obj.todos[objKeys[i]]["dueDate"]
+          }</p>
+          <p class="status-content">status: ${
+            obj.todos[objKeys[i]]["status"]
+          }</p>
+        </div>
+        <p class="taskDescription-content">${
+          obj.todos[objKeys[i]]["taskDescription"]
+        }</p>
+      </div>`;
+    }
   }
 };
 
@@ -51,20 +75,20 @@ const handleResponse = (xhr, parseResponse) => {
   switch (xhr.status) {
     case 200: // success
       responseStatus.innerHTML = `<b>Todos retrieved successfully!</b>`;
-      todoLists.innerHTML += `<div class="single-todo" id="single-todo">
-        <h3 class="taskName-content">${xhr.response.taskName}</h3>
-        <div class="status-and-dueDate">
-          <p class="dueDate-content">due date: ${xhr.response.dueDate}</p>
-          <p class="status-content">status: ${xhr.response.status}</p>
-        </div>
-        <p class="taskDescription-content">${xhr.response.taskDescription}</p>
-      </div>`;
+      // todoLists.innerHTML += `<div class="single-todo" id="single-todo">
+      //   <h3 class="taskName-content">${xhr.response.taskName}</h3>
+      //   <div class="status-and-dueDate">
+      //     <p class="dueDate-content">due date: ${xhr.response.dueDate}</p>
+      //     <p class="status-content">status: ${xhr.response.status}</p>
+      //   </div>
+      //   <p class="taskDescription-content">${xhr.response.taskDescription}</p>
+      // </div>`;
       break;
     case 201: // created
       responseStatus.innerHTML = `Todo created successfully!`;
       break;
     case 204: // updated
-      responseStatus.innerHTML = `<b>Updated (No Content) </b)`;
+      responseStatus.innerHTML = `Updated (No Content)`;
       return;
     case 400: // bad request
       responseStatus.innerHTML = `<b>Bad Request</b>`;
@@ -76,15 +100,14 @@ const handleResponse = (xhr, parseResponse) => {
       responseStatus.innerHTML = `Error code not implemented by client.`;
       break;
   }
-  // console.log("parseResponse: ", parseResponse);
 
   // if we are expecting a response body (not from HEAD request), parse it
   if (parseResponse) {
     parseJSON(xhr, content);
-    console.log("get request");
+    // console.log("get request");
   } else if (typeof parseResponse === "undefined") {
     const obj = JSON.parse(xhr.response);
-    console.dir(obj);
+    // console.dir(obj);
     todoLists.innerHTML += `<div class="single-todo" id="single-todo">
     <h3 class="taskName-content">${obj.taskName}</h3>
     <div class="status-and-dueDate">
@@ -98,7 +121,7 @@ const handleResponse = (xhr, parseResponse) => {
 
 // send post request
 const sendPost = (e, taskForm) => {
-  console.log("in sendPost");
+  // console.log("in sendPost");
   // grab the form's action (url) and method (POST)
   const taskAction = taskForm.getAttribute("action");
   const taskMethod = taskForm.getAttribute("method");
@@ -127,8 +150,6 @@ const sendPost = (e, taskForm) => {
 
 // function to send request
 const requestUpdate = (e, loadTodos) => {
-  console.log("in requestUpdate()");
-
   const url = loadTodos.getAttribute("action");
   const method = loadTodos.getAttribute("method");
 
@@ -155,7 +176,6 @@ const requestUpdate = (e, loadTodos) => {
 
 const init = () => {
   const loadTodos = document.querySelector("#loadTodos");
-  console.log("inside init()");
   const retrieveTodos = e => requestUpdate(e, loadTodos);
   loadTodos.addEventListener("submit", retrieveTodos);
 
