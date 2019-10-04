@@ -53,7 +53,7 @@ var handleResponse = function handleResponse(xhr, parseResponse) {
     case 200:
       // success
       responseStatus.innerHTML = "<b>Todos retrieved successfully!</b>";
-      todoLists.innerHTML += "<div class=\"single-todo\" id=\"single-todo\">\n      <h3 class=\"taskName-content\">" + xhr.response.taskName + "</h3>\n      <div class=\"status-and-dueDate\">\n        <p class=\"dueDate-content\">due date: " + xhr.response.dueDate + "</p>\n        <p class=\"status-content\">status: " + xhr.response.status + "</p>\n      </div>\n      <p class=\"taskDescription-content\">" + xhr.response.taskDescription + "</p>\n    </div>";
+      todoLists.innerHTML += "<div class=\"single-todo\" id=\"single-todo\">\n        <h3 class=\"taskName-content\">" + xhr.response.taskName + "</h3>\n        <div class=\"status-and-dueDate\">\n          <p class=\"dueDate-content\">due date: " + xhr.response.dueDate + "</p>\n          <p class=\"status-content\">status: " + xhr.response.status + "</p>\n        </div>\n        <p class=\"taskDescription-content\">" + xhr.response.taskDescription + "</p>\n      </div>";
       break;
     case 201:
       // created
@@ -76,7 +76,6 @@ var handleResponse = function handleResponse(xhr, parseResponse) {
       break;
   }
   console.log("parseResponse: ", parseResponse);
-  console.log("xhr.response: ", xhr.response);
 
   // if we are expecting a response body (not from HEAD request), parse it
   if (parseResponse) {

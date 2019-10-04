@@ -51,13 +51,13 @@ const handleResponse = (xhr, parseResponse) => {
     case 200: // success
       responseStatus.innerHTML = `<b>Todos retrieved successfully!</b>`;
       todoLists.innerHTML += `<div class="single-todo" id="single-todo">
-      <h3 class="taskName-content">${xhr.response.taskName}</h3>
-      <div class="status-and-dueDate">
-        <p class="dueDate-content">due date: ${xhr.response.dueDate}</p>
-        <p class="status-content">status: ${xhr.response.status}</p>
-      </div>
-      <p class="taskDescription-content">${xhr.response.taskDescription}</p>
-    </div>`;
+        <h3 class="taskName-content">${xhr.response.taskName}</h3>
+        <div class="status-and-dueDate">
+          <p class="dueDate-content">due date: ${xhr.response.dueDate}</p>
+          <p class="status-content">status: ${xhr.response.status}</p>
+        </div>
+        <p class="taskDescription-content">${xhr.response.taskDescription}</p>
+      </div>`;
       break;
     case 201: // created
       responseStatus.innerHTML = `Todo created successfully!`;
@@ -76,7 +76,6 @@ const handleResponse = (xhr, parseResponse) => {
       break;
   }
   console.log("parseResponse: ", parseResponse);
-  console.log("xhr.response: ", xhr.response);
 
   // if we are expecting a response body (not from HEAD request), parse it
   if (parseResponse) {

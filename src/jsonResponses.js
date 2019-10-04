@@ -1,5 +1,8 @@
+let count = 1;
+
 const todos = {
   printResume: {
+    id: count,
     taskName: "print resume",
     dueDate: "2019-25-09",
     status: "not started",
@@ -76,6 +79,8 @@ const addTodo = (request, response, body) => {
   }
 
   // add or update fields for this task name
+  count++;
+  todos[body.taskName].id = count;
   todos[body.taskName].taskName = body.taskName;
   todos[body.taskName].dueDate = body.dueDate;
   todos[body.taskName].status = body.status;
@@ -86,6 +91,7 @@ const addTodo = (request, response, body) => {
   // and sent response with a message
   if (responseCode === 201) {
     responseJSON.message = "Created Successfully";
+    responseJSON.id = count;
     responseJSON.taskName = body.taskName;
     responseJSON.dueDate = body.dueDate;
     responseJSON.status = body.status;
