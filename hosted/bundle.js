@@ -33,6 +33,7 @@ var parseJSON = function parseJSON(xhr, content) {
   console.dir("parseJSON");
   var obj = JSON.parse(xhr.response);
   console.dir(obj);
+  console.dir("obj[\"print resume\"]: ", obj["print resume"]);
 
   // if message in response, add it to the screen
   if (obj.message) {
@@ -75,7 +76,7 @@ var handleResponse = function handleResponse(xhr, parseResponse) {
       responseStatus.innerHTML = "Error code not implemented by client.";
       break;
   }
-  console.log("parseResponse: ", parseResponse);
+  // console.log("parseResponse: ", parseResponse);
 
   // if we are expecting a response body (not from HEAD request), parse it
   if (parseResponse) {

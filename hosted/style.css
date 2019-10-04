@@ -45,7 +45,7 @@ body {
   /* text-align: center; */
   width: 55%;
   margin: 0 auto;
-  border: 1px solid purple;
+  /* border: 1px solid purple; */
 }
 
 /* The Modal (background) */
@@ -267,7 +267,7 @@ ul li.checked::before {
 }
 
 .todo-content {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   display: flex;
   flex-flow: row wrap;
   justify-content: space-evenly;
