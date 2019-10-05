@@ -11,6 +11,7 @@ const submitTask = document.querySelector("#submitTask");
 newTaskButton.onclick = () => {
   console.log("button clicked");
   modal.style.display = "block";
+  // clear the content inside the modal
 };
 
 span.onclick = () => {
@@ -27,6 +28,18 @@ submitTask.onclick = () => {
   modal.style.display = "none";
 };
 
+// code to update each individual todo
+const arrLength = document.getElementsByClassName("single-todo").length;
+
+// for (let i = 0; i < arrLength; i++) {
+//   console.log("initial load");
+//   document
+//     .getElementsByClassName("single-todo")
+//     [i].addEventListener("click", e => {
+//       console.log("index: " + i);
+//     });
+// }
+
 const parseJSON = (xhr, content) => {
   console.dir("parseJSON");
   const obj = JSON.parse(xhr.response);
@@ -34,11 +47,11 @@ const parseJSON = (xhr, content) => {
 
   const todoLists = document.querySelector("#todo-lists");
   const objKeys = Object.keys(obj["todos"]);
-  console.log("length", Object.keys(obj["todos"]).length);
-  console.log(Object.keys(obj["todos"]));
-  console.log(String(objKeys));
-  console.log("is string?", Object.keys(obj["todos"])[0] === typeof string);
-  console.log(obj.todos[objKeys[0]]["taskName"]);
+  // console.log("length", Object.keys(obj["todos"]).length);
+  // console.log(Object.keys(obj["todos"]));
+  // console.log(String(objKeys));
+  // console.log("is string?", Object.keys(obj["todos"])[0] === typeof string);
+  // console.log(obj.todos[objKeys[0]]["taskName"]);
 
   // if message in response, add it to the screen
   if (obj.message) {
@@ -47,10 +60,12 @@ const parseJSON = (xhr, content) => {
 
   if (obj.todos) {
     // iterate through the todos object
-    // for each key that exists, add a new element to the screen
+    // for each key that exists, add a new todo element to the screen
     todoLists.innerHTML = "";
     for (let i = 0; i < Object.keys(obj["todos"]).length; i++) {
-      todoLists.innerHTML += `<div class="single-todo" id="single-todo">
+      todoLists.innerHTML += `<div class="single-todo" id="single-todo-${
+        obj.todos[objKeys[i]]["id"]
+      }">
         <h3 class="taskName-content">${obj.todos[objKeys[i]]["taskName"]}</h3>
         <div class="status-and-dueDate">
           <p class="dueDate-content">due date: ${
@@ -65,6 +80,14 @@ const parseJSON = (xhr, content) => {
         }</p>
       </div>`;
     }
+
+    // for (let i = 0; i < arrLength; i++) {
+    //   console.log("inside for loop");
+    //   let str = `#single-todo-${obj.todos[objKeys[i]]["id"]}`;
+    //   document.querySelector(str).addEventListener("click", e => {
+    //     console.log("index: " + i);
+    //   });
+    // }
   }
 };
 
@@ -74,15 +97,7 @@ const handleResponse = (xhr, parseResponse) => {
 
   switch (xhr.status) {
     case 200: // success
-      responseStatus.innerHTML = `<b>Todos retrieved successfully!</b>`;
-      // todoLists.innerHTML += `<div class="single-todo" id="single-todo">
-      //   <h3 class="taskName-content">${xhr.response.taskName}</h3>
-      //   <div class="status-and-dueDate">
-      //     <p class="dueDate-content">due date: ${xhr.response.dueDate}</p>
-      //     <p class="status-content">status: ${xhr.response.status}</p>
-      //   </div>
-      //   <p class="taskDescription-content">${xhr.response.taskDescription}</p>
-      // </div>`;
+      responseStatus.innerHTML = `Todos retrieved successfully!`;
       break;
     case 201: // created
       responseStatus.innerHTML = `Todo created successfully!`;
@@ -91,10 +106,10 @@ const handleResponse = (xhr, parseResponse) => {
       responseStatus.innerHTML = `Updated (No Content)`;
       return;
     case 400: // bad request
-      responseStatus.innerHTML = `<b>Bad Request</b>`;
+      responseStatus.innerHTML = `Bad Request`;
       break;
     case 404: // not found
-      responseStatus.innerHTML = `<b>Resource Not found</b>`;
+      responseStatus.innerHTML = `Resource Not found`;
       break;
     default:
       responseStatus.innerHTML = `Error code not implemented by client.`;
@@ -108,7 +123,7 @@ const handleResponse = (xhr, parseResponse) => {
   } else if (typeof parseResponse === "undefined") {
     const obj = JSON.parse(xhr.response);
     // console.dir(obj);
-    todoLists.innerHTML += `<div class="single-todo" id="single-todo">
+    todoLists.innerHTML += `<div class="single-todo" id="single-todo-${obj.id}">
     <h3 class="taskName-content">${obj.taskName}</h3>
     <div class="status-and-dueDate">
       <p class="dueDate-content">due date: ${obj.dueDate}</p>
@@ -116,6 +131,10 @@ const handleResponse = (xhr, parseResponse) => {
     </div>
     <p class="taskDescription-content">${obj.taskDescription}</p>
   </div>`;
+    // let element = `#single-todo-${obj.id}`;
+    // document.querySelector(element).addEventListener("click", e => {
+    //   console.log("event listener added to POST");
+    // });
   }
 };
 
@@ -172,6 +191,10 @@ const requestUpdate = (e, loadTodos) => {
   xhr.send();
   e.preventDefault();
   return false;
+};
+
+const filterResults = (e, obj) => {
+  const url = obj.getAttribute("action");
 };
 
 const init = () => {

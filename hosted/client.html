@@ -75,6 +75,15 @@
       </div>
     </div>
     <section id="content">
+      <form id="filter-results" action="/getTodos" method="get">
+        <label for="filter-results" class="filter-label">filter by: </label>
+        <select id="filter-dropdown">
+          <option value="/getTodos">all</option>
+          <option value="/getTodos?status=notStarted">not started</option>
+          <option value="/getTodos?status=inProgress">in progress</option>
+          <option value="done">done</option>
+        </select>
+      </form>
       <p id="response-status"></p>
       <div id="todo-lists" class="todo-content">
         <div class="single-todo" id="single-todo">

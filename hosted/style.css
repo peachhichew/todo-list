@@ -283,6 +283,10 @@ ul li.checked::before {
   border-radius: 5px;
 }
 
+.single-todo:hover {
+  cursor: pointer;
+}
+
 .status-and-dueDate {
   /* border: 1px solid green; */
   display: flex;

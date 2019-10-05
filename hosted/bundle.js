@@ -1,7 +1,5 @@
 "use strict";
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 // https://www.w3schools.com/howto/howto_js_todolist.asp
 // https://www.w3schools.com/css/css_form.asp
 // https://www.w3schools.com/howto/howto_css_modals.asp
@@ -15,6 +13,7 @@ var submitTask = document.querySelector("#submitTask");
 newTaskButton.onclick = function () {
   console.log("button clicked");
   modal.style.display = "block";
+  // clear the content inside the modal
 };
 
 span.onclick = function () {
@@ -31,6 +30,18 @@ submitTask.onclick = function () {
   modal.style.display = "none";
 };
 
+// code to update each individual todo
+var arrLength = document.getElementsByClassName("single-todo").length;
+
+// for (let i = 0; i < arrLength; i++) {
+//   console.log("initial load");
+//   document
+//     .getElementsByClassName("single-todo")
+//     [i].addEventListener("click", e => {
+//       console.log("index: " + i);
+//     });
+// }
+
 var parseJSON = function parseJSON(xhr, content) {
   console.dir("parseJSON");
   var obj = JSON.parse(xhr.response);
@@ -38,11 +49,11 @@ var parseJSON = function parseJSON(xhr, content) {
 
   var todoLists = document.querySelector("#todo-lists");
   var objKeys = Object.keys(obj["todos"]);
-  console.log("length", Object.keys(obj["todos"]).length);
-  console.log(Object.keys(obj["todos"]));
-  console.log(String(objKeys));
-  console.log("is string?", Object.keys(obj["todos"])[0] === (typeof string === "undefined" ? "undefined" : _typeof(string)));
-  console.log(obj.todos[objKeys[0]]["taskName"]);
+  // console.log("length", Object.keys(obj["todos"]).length);
+  // console.log(Object.keys(obj["todos"]));
+  // console.log(String(objKeys));
+  // console.log("is string?", Object.keys(obj["todos"])[0] === typeof string);
+  // console.log(obj.todos[objKeys[0]]["taskName"]);
 
   // if message in response, add it to the screen
   if (obj.message) {
@@ -51,11 +62,19 @@ var parseJSON = function parseJSON(xhr, content) {
 
   if (obj.todos) {
     // iterate through the todos object
-    // for each key that exists, add a new element to the screen
+    // for each key that exists, add a new todo element to the screen
     todoLists.innerHTML = "";
     for (var i = 0; i < Object.keys(obj["todos"]).length; i++) {
-      todoLists.innerHTML += "<div class=\"single-todo\" id=\"single-todo\">\n        <h3 class=\"taskName-content\">" + obj.todos[objKeys[i]]["taskName"] + "</h3>\n        <div class=\"status-and-dueDate\">\n          <p class=\"dueDate-content\">due date: " + obj.todos[objKeys[i]]["dueDate"] + "</p>\n          <p class=\"status-content\">status: " + obj.todos[objKeys[i]]["status"] + "</p>\n        </div>\n        <p class=\"taskDescription-content\">" + obj.todos[objKeys[i]]["taskDescription"] + "</p>\n      </div>";
+      todoLists.innerHTML += "<div class=\"single-todo\" id=\"single-todo-" + obj.todos[objKeys[i]]["id"] + "\">\n        <h3 class=\"taskName-content\">" + obj.todos[objKeys[i]]["taskName"] + "</h3>\n        <div class=\"status-and-dueDate\">\n          <p class=\"dueDate-content\">due date: " + obj.todos[objKeys[i]]["dueDate"] + "</p>\n          <p class=\"status-content\">status: " + obj.todos[objKeys[i]]["status"] + "</p>\n        </div>\n        <p class=\"taskDescription-content\">" + obj.todos[objKeys[i]]["taskDescription"] + "</p>\n      </div>";
     }
+
+    // for (let i = 0; i < arrLength; i++) {
+    //   console.log("inside for loop");
+    //   let str = `#single-todo-${obj.todos[objKeys[i]]["id"]}`;
+    //   document.querySelector(str).addEventListener("click", e => {
+    //     console.log("index: " + i);
+    //   });
+    // }
   }
 };
 
@@ -66,15 +85,7 @@ var handleResponse = function handleResponse(xhr, parseResponse) {
   switch (xhr.status) {
     case 200:
       // success
-      responseStatus.innerHTML = "<b>Todos retrieved successfully!</b>";
-      // todoLists.innerHTML += `<div class="single-todo" id="single-todo">
-      //   <h3 class="taskName-content">${xhr.response.taskName}</h3>
-      //   <div class="status-and-dueDate">
-      //     <p class="dueDate-content">due date: ${xhr.response.dueDate}</p>
-      //     <p class="status-content">status: ${xhr.response.status}</p>
-      //   </div>
-      //   <p class="taskDescription-content">${xhr.response.taskDescription}</p>
-      // </div>`;
+      responseStatus.innerHTML = "Todos retrieved successfully!";
       break;
     case 201:
       // created
@@ -86,11 +97,11 @@ var handleResponse = function handleResponse(xhr, parseResponse) {
       return;
     case 400:
       // bad request
-      responseStatus.innerHTML = "<b>Bad Request</b>";
+      responseStatus.innerHTML = "Bad Request";
       break;
     case 404:
       // not found
-      responseStatus.innerHTML = "<b>Resource Not found</b>";
+      responseStatus.innerHTML = "Resource Not found";
       break;
     default:
       responseStatus.innerHTML = "Error code not implemented by client.";
@@ -104,7 +115,11 @@ var handleResponse = function handleResponse(xhr, parseResponse) {
   } else if (typeof parseResponse === "undefined") {
     var obj = JSON.parse(xhr.response);
     // console.dir(obj);
-    todoLists.innerHTML += "<div class=\"single-todo\" id=\"single-todo\">\n    <h3 class=\"taskName-content\">" + obj.taskName + "</h3>\n    <div class=\"status-and-dueDate\">\n      <p class=\"dueDate-content\">due date: " + obj.dueDate + "</p>\n      <p class=\"status-content\">status: " + obj.status + "</p>\n    </div>\n    <p class=\"taskDescription-content\">" + obj.taskDescription + "</p>\n  </div>";
+    todoLists.innerHTML += "<div class=\"single-todo\" id=\"single-todo-" + obj.id + "\">\n    <h3 class=\"taskName-content\">" + obj.taskName + "</h3>\n    <div class=\"status-and-dueDate\">\n      <p class=\"dueDate-content\">due date: " + obj.dueDate + "</p>\n      <p class=\"status-content\">status: " + obj.status + "</p>\n    </div>\n    <p class=\"taskDescription-content\">" + obj.taskDescription + "</p>\n  </div>";
+    // let element = `#single-todo-${obj.id}`;
+    // document.querySelector(element).addEventListener("click", e => {
+    //   console.log("event listener added to POST");
+    // });
   }
 };
 
@@ -167,6 +182,10 @@ var requestUpdate = function requestUpdate(e, loadTodos) {
   xhr.send();
   e.preventDefault();
   return false;
+};
+
+var filterResults = function filterResults(e, obj) {
+  var url = obj.getAttribute("action");
 };
 
 var init = function init() {
