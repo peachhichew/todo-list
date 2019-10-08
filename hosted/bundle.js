@@ -33,6 +33,7 @@ submitTask.onclick = function () {
 // code to update each individual todo
 var arrLength = document.getElementsByClassName("single-todo").length;
 
+// use createElement instead for making the new elements
 // for (let i = 0; i < arrLength; i++) {
 //   console.log("initial load");
 //   document
@@ -48,7 +49,6 @@ var parseJSON = function parseJSON(xhr, content) {
   console.dir(obj);
 
   var todoLists = document.querySelector("#todo-lists");
-  var objKeys = Object.keys(obj["todos"]);
   // console.log("length", Object.keys(obj["todos"]).length);
   // console.log(Object.keys(obj["todos"]));
   // console.log(String(objKeys));
@@ -61,6 +61,7 @@ var parseJSON = function parseJSON(xhr, content) {
   }
 
   if (obj.todos) {
+    var objKeys = Object.keys(obj["todos"]);
     // iterate through the todos object
     // for each key that exists, add a new todo element to the screen
     todoLists.innerHTML = "";
@@ -184,8 +185,32 @@ var requestUpdate = function requestUpdate(e, loadTodos) {
   return false;
 };
 
-var filterResults = function filterResults(e, obj) {
-  var url = obj.getAttribute("action");
+var filterResults = function filterResults() {
+  var url = document.querySelector("#filter-dropdown").value;
+  var method = document.querySelector("#filter-results").getAttribute("method");
+  console.log("url: ", url);
+
+  // create an ajax request
+  var xhr = new XMLHttpRequest();
+  xhr.open(method, url);
+  xhr.setRequestHeader("Accept", "application/json");
+
+  // // check if GET or HEAD request
+  // if (method == "get") {
+  //   // set onload to parse request and retrieve json message
+  console.log("get request submitted");
+  xhr.onload = function () {
+    return handleResponse(xhr, true);
+  };
+  // } else {
+  //   // set onload to check meta data and NOT message
+  //   // no body responses in a HEAD request
+  //   xhr.onload = () => handleResponse(xhr, false);
+  // }
+
+  xhr.send();
+  // e.preventDefault();
+  return false;
 };
 
 var init = function init() {

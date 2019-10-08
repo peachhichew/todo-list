@@ -31,6 +31,7 @@ submitTask.onclick = () => {
 // code to update each individual todo
 const arrLength = document.getElementsByClassName("single-todo").length;
 
+// use createElement instead for making the new elements
 // for (let i = 0; i < arrLength; i++) {
 //   console.log("initial load");
 //   document
@@ -46,7 +47,6 @@ const parseJSON = (xhr, content) => {
   console.dir(obj);
 
   const todoLists = document.querySelector("#todo-lists");
-  const objKeys = Object.keys(obj["todos"]);
   // console.log("length", Object.keys(obj["todos"]).length);
   // console.log(Object.keys(obj["todos"]));
   // console.log(String(objKeys));
@@ -59,6 +59,7 @@ const parseJSON = (xhr, content) => {
   }
 
   if (obj.todos) {
+    const objKeys = Object.keys(obj["todos"]);
     // iterate through the todos object
     // for each key that exists, add a new todo element to the screen
     todoLists.innerHTML = "";
@@ -193,8 +194,32 @@ const requestUpdate = (e, loadTodos) => {
   return false;
 };
 
-const filterResults = (e, obj) => {
-  const url = obj.getAttribute("action");
+const filterResults = () => {
+  const url = document.querySelector("#filter-dropdown").value;
+  const method = document
+    .querySelector("#filter-results")
+    .getAttribute("method");
+  console.log("url: ", url);
+
+  // create an ajax request
+  const xhr = new XMLHttpRequest();
+  xhr.open(method, url);
+  xhr.setRequestHeader("Accept", "application/json");
+
+  // // check if GET or HEAD request
+  // if (method == "get") {
+  //   // set onload to parse request and retrieve json message
+  console.log("get request submitted");
+  xhr.onload = () => handleResponse(xhr, true);
+  // } else {
+  //   // set onload to check meta data and NOT message
+  //   // no body responses in a HEAD request
+  //   xhr.onload = () => handleResponse(xhr, false);
+  // }
+
+  xhr.send();
+  // e.preventDefault();
+  return false;
 };
 
 const init = () => {

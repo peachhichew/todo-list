@@ -7,7 +7,7 @@ const jsonHandler = require("./jsonResponses.js");
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 // handle POST requests
-const handlePost = (request, response, parsedUrl) => {
+const handlePost = (request, response, parsedUrl, params) => {
   if (parsedUrl.pathname === "/addTodo") {
     const res = response;
 
@@ -34,46 +34,54 @@ const handlePost = (request, response, parsedUrl) => {
       const bodyString = Buffer.concat(body).toString();
       const bodyParams = query.parse(bodyString);
 
-      jsonHandler.addTodo(request, res, bodyParams);
+      jsonHandler.addTodo(request, res, bodyParams, params);
     });
   }
 };
 
 // handle GET request
-const handleGet = (request, response, parsedUrl) => {
+const handleGet = (request, response, parsedUrl, params) => {
   if (parsedUrl.pathname === "/style.css") {
     htmlHandler.getCSS(request, response);
   } else if (parsedUrl.pathname === "/getTodos") {
-    jsonHandler.getTodos(request, response);
+    console.log("params: ", params);
+    jsonHandler.getTodos(request, response, params);
   } else if (parsedUrl.pathname === "/notReal") {
-    jsonHandler.notReal(request, response);
+    jsonHandler.notReal(request, response, params);
   } else if (parsedUrl.pathname === "/bundle.js") {
     htmlHandler.getBundle(request, response);
-  } else if (
-    parsedUrl.pathname !== "/style.css" &&
-    parsedUrl.pathname !== "/getUsers" &&
-    parsedUrl.pathname !== "/notReal" &&
-    parsedUrl.pathname !== "/" &&
-    parsedUrl.pathname !== "/bundle.js"
-  ) {
-    jsonHandler.notReal(request, response);
-  } else {
+  }
+  // else if (
+  //   parsedUrl.pathname !== "/style.css" &&
+  //   parsedUrl.pathname !== "/getUsers" &&
+  //   parsedUrl.pathname !== "/notReal" &&
+  //   parsedUrl.pathname !== "/" &&
+  //   parsedUrl.pathname !== "/bundle.js"
+  // ) {
+  //   jsonHandler.notReal(request, response, params);
+  // }
+  else if (parsedUrl.pathname === "/") {
     htmlHandler.getIndex(request, response);
+  } else if (parsedUrl.pathname === "/badRequest") {
+    jsonHandler.badRequest(request, response, params);
+  } else {
+    // htmlHandler.getIndex(request, response);
+    jsonHandler.notReal(request, response, params);
   }
 };
 
-const handleHead = (request, response, parsedUrl) => {
+const handleHead = (request, response, parsedUrl, params) => {
   if (parsedUrl.pathname === "/getTodos") {
-    jsonHandler.getTodosMeta(request, response);
+    jsonHandler.getTodosMeta(request, response, params);
   } else if (parsedUrl.pathname === "/notReal") {
-    jsonHandler.notRealMeta(request, response);
+    jsonHandler.notRealMeta(request, response, params);
   } else if (
     parsedUrl.pathname !== "/getUsers" &&
     parsedUrl.pathname !== "/notReal"
   ) {
-    jsonHandler.notRealMeta(request, response);
+    jsonHandler.notRealMeta(request, response, params);
   } else {
-    jsonHandler.notRealMeta(request, response);
+    jsonHandler.notRealMeta(request, response, params);
   }
 };
 
@@ -82,13 +90,14 @@ const onRequest = (request, response) => {
   console.log(request.url);
   // parse the url and grab the query parameters
   const parsedUrl = url.parse(request.url);
+  const params = query.parse(parsedUrl.query);
 
   if (request.method === "POST") {
-    handlePost(request, response, parsedUrl);
+    handlePost(request, response, parsedUrl, params);
   } else if (request.method === "HEAD") {
-    handleHead(request, response, parsedUrl);
+    handleHead(request, response, parsedUrl, params);
   } else {
-    handleGet(request, response, parsedUrl);
+    handleGet(request, response, parsedUrl, params);
   }
 };
 
