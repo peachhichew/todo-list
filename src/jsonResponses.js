@@ -57,11 +57,11 @@ const getTodos = (request, response, params) => {
 };
 
 // get meta info about the users and return a 200 status code
-const getTodosMeta = (request, response, params) => {
+const getTodosMeta = (request, response) => {
   respondJSONMeta(request, response, 200);
 };
 
-const addTodo = (request, response, body, params) => {
+const addTodo = (request, response, body) => {
   const responseJSON = {
     message: "All fields are required."
   };
@@ -115,7 +115,7 @@ const addTodo = (request, response, body, params) => {
 };
 
 // function for 404 with message
-const notReal = (request, response, params) => {
+const notReal = (request, response) => {
   const responseJSON = {
     message: "The page you are looking for was not found.",
     id: "notFound"
@@ -124,7 +124,7 @@ const notReal = (request, response, params) => {
   return respondJSON(request, response, 404, responseJSON);
 };
 
-const notRealMeta = (request, response, params) =>
+const notRealMeta = (request, response) =>
   respondJSONMeta(request, response, 404);
 
 const badRequest = (request, response, params) => {
