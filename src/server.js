@@ -60,7 +60,7 @@ const handleGet = (request, response, parsedUrl, params) => {
   }
 };
 
-const handleHead = (request, response, parsedUrl, params) => {
+const handleHead = (request, response, parsedUrl) => {
   if (parsedUrl.pathname === "/getTodos") {
     jsonHandler.getTodosMeta(request, response);
   } else if (parsedUrl.pathname === "/notReal") {
