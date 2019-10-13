@@ -306,12 +306,12 @@ ul li.checked::before {
   font-size: 14px;
 }
 
-#response-status {
+/* #response-status {
   animation: decreaseOpacity 2s ease;
   animation-delay: 3s;
   -webkit-animation: decreaseOpacity 2s ease;
   -webkit-animation-delay: 3s;
-}
+} */
 
 @keyframes decreaseOpacity {
   0% {

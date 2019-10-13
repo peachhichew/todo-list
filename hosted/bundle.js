@@ -32,11 +32,39 @@ submitTask.onclick = function () {
   modal.style.display = "none";
 };
 
+var displayTodos = function displayTodos(obj, objTodos, todosName, todoLists) {
+  var objKeys = Object.keys(obj[todosName]);
+  todoLists.innerHTML = "";
+  for (var i = 0; i < Object.keys(obj[todosName]).length; i++) {
+    todoLists.innerHTML += "<div class=\"single-todo\" id=\"single-todo-" + objTodos[objKeys[i]]["id"] + "\">\n      <h3 class=\"taskName-content\">" + objTodos[objKeys[i]]["taskName"] + "</h3>\n      <div class=\"status-and-dueDate\">\n        <p class=\"dueDate-content\">due date: " + objTodos[objKeys[i]]["dueDate"] + "</p>\n        <p class=\"status-content\">status: " + objTodos[objKeys[i]]["status"] + "</p>\n      </div>\n      <p class=\"taskDescription-content\">" + objTodos[objKeys[i]]["taskDescription"] + "</p>\n    </div>";
+  }
+};
+
 var singleTodo = document.getElementsByClassName("single-todo");
 var taskName = void 0,
     dueDate = void 0,
     statusInModal = void 0,
     descrip = void 0;
+
+var prefillModal = function prefillModal() {
+  for (var i = 0; i < singleTodo.length; i++) {
+    (function (i) {
+      singleTodo[i].onclick = function () {
+        console.log("i: ", i);
+        todoForm.reset();
+        modal.style.display = "block";
+        taskName = document.querySelector("#taskName");
+        taskName.value = document.getElementsByClassName("taskName-content")[i].innerHTML;
+        dueDate = document.querySelector("#dueDate");
+        dueDate.value = document.getElementsByClassName("dueDate-content")[i].innerHTML.replace("due date: ", "");
+        statusInModal = document.querySelector("#status");
+        statusInModal.value = document.getElementsByClassName("status-content")[i].innerHTML.replace("status: ", "");
+        descrip = document.querySelector("#taskDescription");
+        descrip.value = document.getElementsByClassName("taskDescription-content")[i].innerHTML;
+      };
+    })(i);
+  }
+};
 
 var _loop = function _loop(i) {
   singleTodo[i].onclick = function () {
@@ -72,61 +100,13 @@ var parseJSON = function parseJSON(xhr) {
   }
 
   if (obj.todos) {
-    console.log("inside obj.todos");
-    var objKeys = Object.keys(obj["todos"]);
-    // iterate through the todos object
-    // for each key that exists, add a new todo element to the screen
-    todoLists.innerHTML = "";
-    for (var _i = 0; _i < Object.keys(obj["todos"]).length; _i++) {
-      todoLists.innerHTML += "<div class=\"single-todo\" id=\"single-todo-" + obj.todos[objKeys[_i]]["id"] + "\">\n        <h3 class=\"taskName-content\">" + obj.todos[objKeys[_i]]["taskName"] + "</h3>\n        <div class=\"status-and-dueDate\">\n          <p class=\"dueDate-content\">due date: " + obj.todos[objKeys[_i]]["dueDate"] + "</p>\n          <p class=\"status-content\">status: " + obj.todos[objKeys[_i]]["status"] + "</p>\n        </div>\n        <p class=\"taskDescription-content\">" + obj.todos[objKeys[_i]]["taskDescription"] + "</p>\n      </div>";
-    }
-
-    for (var _i2 = 0; _i2 < singleTodo.length; _i2++) {
-      (function (i) {
-        singleTodo[i].onclick = function () {
-          console.log("i: ", i);
-          todoForm.reset();
-          modal.style.display = "block";
-          taskName = document.querySelector("#taskName");
-          taskName.value = document.getElementsByClassName("taskName-content")[i].innerHTML;
-          dueDate = document.querySelector("#dueDate");
-          dueDate.value = document.getElementsByClassName("dueDate-content")[i].innerHTML.replace("due date: ", "");
-          statusInModal = document.querySelector("#status");
-          statusInModal.value = document.getElementsByClassName("status-content")[i].innerHTML.replace("status: ", "");
-          descrip = document.querySelector("#taskDescription");
-          descrip.value = document.getElementsByClassName("taskDescription-content")[i].innerHTML;
-        };
-      })(_i2);
-    }
+    displayTodos(obj, obj.todos, "todos", todoLists);
+    prefillModal();
   }
 
   if (obj.newTodos) {
-    console.log("inside obj.newTodos");
-    var _objKeys = Object.keys(obj["newTodos"]);
-    // iterate through the todos object
-    // for each key that exists, add a new todo element to the screen
-    todoLists.innerHTML = "";
-    for (var _i3 = 0; _i3 < Object.keys(obj["newTodos"]).length; _i3++) {
-      todoLists.innerHTML += "<div class=\"single-todo\" id=\"single-todo-" + obj.newTodos[_objKeys[_i3]]["id"] + "\">\n        <h3 class=\"taskName-content\">" + obj.newTodos[_objKeys[_i3]]["taskName"] + "</h3>\n        <div class=\"status-and-dueDate\">\n          <p class=\"dueDate-content\">due date: " + obj.newTodos[_objKeys[_i3]]["dueDate"] + "</p>\n          <p class=\"status-content\">status: " + obj.newTodos[_objKeys[_i3]]["status"] + "</p>\n        </div>\n        <p class=\"taskDescription-content\">" + obj.newTodos[_objKeys[_i3]]["taskDescription"] + "</p>\n      </div>";
-    }
-
-    for (var i = 0; i < singleTodo.length; i++) {
-      (function (i) {
-        singleTodo[i].onclick = function () {
-          console.log("i: ", i);
-          todoForm.reset();
-          modal.style.display = "block";
-          taskName = document.querySelector("#taskName");
-          taskName.value = document.getElementsByClassName("taskName-content")[i].innerHTML;
-          dueDate = document.querySelector("#dueDate");
-          dueDate.value = document.getElementsByClassName("dueDate-content")[i].innerHTML.replace("due date: ", "");
-          statusInModal = document.querySelector("#status");
-          statusInModal.value = document.getElementsByClassName("status-content")[i].innerHTML.replace("status: ", "");
-          descrip = document.querySelector("#taskDescription");
-          descrip.value = document.getElementsByClassName("taskDescription-content")[i].innerHTML;
-        };
-      })(i);
-    }
+    displayTodos(obj, obj.newTodos, "newTodos", todoLists);
+    prefillModal();
   }
 };
 
