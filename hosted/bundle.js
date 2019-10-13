@@ -33,32 +33,12 @@ submitTask.onclick = function () {
 // code to update each individual todo
 var arrLength = document.getElementsByClassName("single-todo").length;
 
-// use createElement instead for making the new elements
-// for (let i = 0; i < arrLength; i++) {
-//   console.log("initial load");
-//   document
-//     .getElementsByClassName("single-todo")
-//     [i].addEventListener("click", e => {
-//       console.log("index: " + i);
-//     });
-// }
-
-var parseJSON = function parseJSON(xhr, content) {
+var parseJSON = function parseJSON(xhr) {
   console.dir("parseJSON");
   var obj = JSON.parse(xhr.response);
   console.dir(obj);
 
   var todoLists = document.querySelector("#todo-lists");
-  // console.log("length", Object.keys(obj["todos"]).length);
-  // console.log(Object.keys(obj["todos"]));
-  // console.log(String(objKeys));
-  // console.log("is string?", Object.keys(obj["todos"])[0] === typeof string);
-  // console.log(obj.todos[objKeys[0]]["taskName"]);
-
-  // if message in response, add it to the screen
-  if (obj.message) {
-    content.innerHTML += "<p>" + obj.message + "</p>";
-  }
 
   if (obj.todos) {
     console.log("inside obj.todos");
@@ -69,14 +49,6 @@ var parseJSON = function parseJSON(xhr, content) {
     for (var i = 0; i < Object.keys(obj["todos"]).length; i++) {
       todoLists.innerHTML += "<div class=\"single-todo\" id=\"single-todo-" + obj.todos[objKeys[i]]["id"] + "\">\n        <h3 class=\"taskName-content\">" + obj.todos[objKeys[i]]["taskName"] + "</h3>\n        <div class=\"status-and-dueDate\">\n          <p class=\"dueDate-content\">due date: " + obj.todos[objKeys[i]]["dueDate"] + "</p>\n          <p class=\"status-content\">status: " + obj.todos[objKeys[i]]["status"] + "</p>\n        </div>\n        <p class=\"taskDescription-content\">" + obj.todos[objKeys[i]]["taskDescription"] + "</p>\n      </div>";
     }
-
-    // for (let i = 0; i < arrLength; i++) {
-    //   console.log("inside for loop");
-    //   let str = `#single-todo-${obj.todos[objKeys[i]]["id"]}`;
-    //   document.querySelector(str).addEventListener("click", e => {
-    //     console.log("index: " + i);
-    //   });
-    // }
   }
 
   if (obj.newTodos) {
@@ -106,11 +78,11 @@ var handleResponse = function handleResponse(xhr, parseResponse) {
       break;
     case 204:
       // updated
-      responseStatus.innerHTML = "Updated (No Content)";
+      responseStatus.innerHTML = "Updated todo!";
       return;
     case 400:
       // bad request
-      responseStatus.innerHTML = "Bad Request";
+      responseStatus.innerHTML = "Bad Request (missing parameters)";
       break;
     case 404:
       // not found
@@ -124,16 +96,23 @@ var handleResponse = function handleResponse(xhr, parseResponse) {
   // if we are expecting a response body (not from HEAD request), parse it
   if (parseResponse) {
     console.log("inside parseResponse block");
-    parseJSON(xhr, content);
+    // responseStatus.style = `animation: decreaseOpacity 2s ease;
+    // animation-delay: 3s;
+    // -webkit-animation: decreaseOpacity 2s ease;
+    // -webkit-animation-delay: 3s;`;
+    // console.log("style", responseStatus.style);
+    parseJSON(xhr);
     // console.log("get request");
   } else if (typeof parseResponse === "undefined") {
     var obj = JSON.parse(xhr.response);
     // console.dir(obj);
+    // responseStatus.style = `animation: decreaseOpacity 2s ease;
+    // animation-delay: 3s;
+    // -webkit-animation: decreaseOpacity 2s ease;
+    // -webkit-animation-delay: 3s;`;
+    // console.log("style", responseStatus.style);
+    responseStatus.innerHTML += "<p>" + obj.message + "</p>";
     todoLists.innerHTML += "<div class=\"single-todo\" id=\"single-todo-" + obj.id + "\">\n    <h3 class=\"taskName-content\">" + obj.taskName + "</h3>\n    <div class=\"status-and-dueDate\">\n      <p class=\"dueDate-content\">due date: " + obj.dueDate + "</p>\n      <p class=\"status-content\">status: " + obj.status + "</p>\n    </div>\n    <p class=\"taskDescription-content\">" + obj.taskDescription + "</p>\n  </div>";
-    // let element = `#single-todo-${obj.id}`;
-    // document.querySelector(element).addEventListener("click", e => {
-    //   console.log("event listener added to POST");
-    // });
   }
 };
 
@@ -210,22 +189,17 @@ var filterResults = function filterResults() {
   xhr.open(method, url);
   xhr.setRequestHeader("Accept", "application/json");
 
-  // // check if GET or HEAD request
-  // if (method == "get") {
-  //   // set onload to parse request and retrieve json message
   console.log("get request submitted");
   xhr.onload = function () {
     return handleResponse(xhr, true);
   };
-  // } else {
-  //   // set onload to check meta data and NOT message
-  //   // no body responses in a HEAD request
-  //   xhr.onload = () => handleResponse(xhr, false);
-  // }
-
   xhr.send();
   // e.preventDefault();
   return false;
+};
+
+var test = function test() {
+  alert("meow");
 };
 
 var init = function init() {

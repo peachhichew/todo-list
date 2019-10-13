@@ -31,32 +31,12 @@ submitTask.onclick = () => {
 // code to update each individual todo
 const arrLength = document.getElementsByClassName("single-todo").length;
 
-// use createElement instead for making the new elements
-// for (let i = 0; i < arrLength; i++) {
-//   console.log("initial load");
-//   document
-//     .getElementsByClassName("single-todo")
-//     [i].addEventListener("click", e => {
-//       console.log("index: " + i);
-//     });
-// }
-
-const parseJSON = (xhr, content) => {
+const parseJSON = xhr => {
   console.dir("parseJSON");
   const obj = JSON.parse(xhr.response);
   console.dir(obj);
 
   const todoLists = document.querySelector("#todo-lists");
-  // console.log("length", Object.keys(obj["todos"]).length);
-  // console.log(Object.keys(obj["todos"]));
-  // console.log(String(objKeys));
-  // console.log("is string?", Object.keys(obj["todos"])[0] === typeof string);
-  // console.log(obj.todos[objKeys[0]]["taskName"]);
-
-  // if message in response, add it to the screen
-  if (obj.message) {
-    content.innerHTML += `<p>${obj.message}</p>`;
-  }
 
   if (obj.todos) {
     console.log("inside obj.todos");
@@ -82,14 +62,6 @@ const parseJSON = (xhr, content) => {
         }</p>
       </div>`;
     }
-
-    // for (let i = 0; i < arrLength; i++) {
-    //   console.log("inside for loop");
-    //   let str = `#single-todo-${obj.todos[objKeys[i]]["id"]}`;
-    //   document.querySelector(str).addEventListener("click", e => {
-    //     console.log("index: " + i);
-    //   });
-    // }
   }
 
   if (obj.newTodos) {
@@ -133,10 +105,10 @@ const handleResponse = (xhr, parseResponse) => {
       responseStatus.innerHTML = `Todo created successfully!`;
       break;
     case 204: // updated
-      responseStatus.innerHTML = `Updated (No Content)`;
+      responseStatus.innerHTML = `Updated todo!`;
       return;
     case 400: // bad request
-      responseStatus.innerHTML = `Bad Request`;
+      responseStatus.innerHTML = `Bad Request (missing parameters)`;
       break;
     case 404: // not found
       responseStatus.innerHTML = `Resource Not found`;
@@ -149,11 +121,22 @@ const handleResponse = (xhr, parseResponse) => {
   // if we are expecting a response body (not from HEAD request), parse it
   if (parseResponse) {
     console.log("inside parseResponse block");
-    parseJSON(xhr, content);
+    // responseStatus.style = `animation: decreaseOpacity 2s ease;
+    // animation-delay: 3s;
+    // -webkit-animation: decreaseOpacity 2s ease;
+    // -webkit-animation-delay: 3s;`;
+    // console.log("style", responseStatus.style);
+    parseJSON(xhr);
     // console.log("get request");
   } else if (typeof parseResponse === "undefined") {
     const obj = JSON.parse(xhr.response);
     // console.dir(obj);
+    // responseStatus.style = `animation: decreaseOpacity 2s ease;
+    // animation-delay: 3s;
+    // -webkit-animation: decreaseOpacity 2s ease;
+    // -webkit-animation-delay: 3s;`;
+    // console.log("style", responseStatus.style);
+    responseStatus.innerHTML += `<p>${obj.message}</p>`;
     todoLists.innerHTML += `<div class="single-todo" id="single-todo-${obj.id}">
     <h3 class="taskName-content">${obj.taskName}</h3>
     <div class="status-and-dueDate">
@@ -162,10 +145,6 @@ const handleResponse = (xhr, parseResponse) => {
     </div>
     <p class="taskDescription-content">${obj.taskDescription}</p>
   </div>`;
-    // let element = `#single-todo-${obj.id}`;
-    // document.querySelector(element).addEventListener("click", e => {
-    //   console.log("event listener added to POST");
-    // });
   }
 };
 
@@ -238,20 +217,15 @@ const filterResults = () => {
   xhr.open(method, url);
   xhr.setRequestHeader("Accept", "application/json");
 
-  // // check if GET or HEAD request
-  // if (method == "get") {
-  //   // set onload to parse request and retrieve json message
   console.log("get request submitted");
   xhr.onload = () => handleResponse(xhr, true);
-  // } else {
-  //   // set onload to check meta data and NOT message
-  //   // no body responses in a HEAD request
-  //   xhr.onload = () => handleResponse(xhr, false);
-  // }
-
   xhr.send();
   // e.preventDefault();
   return false;
+};
+
+const test = () => {
+  alert("meow");
 };
 
 const init = () => {

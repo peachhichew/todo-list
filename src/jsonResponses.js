@@ -5,7 +5,7 @@ const todos = {
     id: count,
     taskName: "print resume",
     dueDate: "2019-25-09",
-    status: "not-started",
+    status: "not started",
     taskDescription: "head to library to print 20 copies of resume"
   }
 };
@@ -57,12 +57,12 @@ const getTodos = (request, response, params) => {
     return respondJSON(request, response, 200, responseJSON);
   } else if (params.status === "not-started") {
     newTodos = {};
-    filterByStatus("not-started", objKeys, todos, newTodos);
+    filterByStatus("not started", objKeys, todos, newTodos);
     responseJSON = { newTodos };
     console.log("return responseJSON: ", responseJSON);
   } else if (params.status === "in-progress") {
     newTodos = {};
-    filterByStatus("in-progress", objKeys, todos, newTodos);
+    filterByStatus("in progress", objKeys, todos, newTodos);
     responseJSON = { newTodos };
     console.log("responseJSON: ", responseJSON);
   } else if (params.status === "done") {
@@ -136,7 +136,7 @@ const addTodo = (request, response, body) => {
   // if the response is created, then change the message
   // and sent response with a message
   if (responseCode === 201) {
-    responseJSON.message = "Created Successfully";
+    responseJSON.message = "Your todo has been added.";
     responseJSON.id = count;
     responseJSON.taskName = body.taskName;
     responseJSON.dueDate = body.dueDate;

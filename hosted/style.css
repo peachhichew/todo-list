@@ -309,7 +309,43 @@ ul li.checked::before {
   font-size: 14px;
 }
 
-.taskDescription-content {
-  /* font-size: 14px;
-  font-style: italic; */
+#response-status {
+  animation: decreaseOpacity 2s ease;
+  animation-delay: 3s;
+  -webkit-animation: decreaseOpacity 2s ease;
+  -webkit-animation-delay: 3s;
+}
+
+@keyframes decreaseOpacity {
+  0% {
+    display: auto;
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 0;
+    display: none;
+    visibility: hidden;
+  }
+}
+
+@-webkit-keyframes decreaseOpacity {
+  0% {
+    display: auto;
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 0;
+    display: none;
+    visibility: hidden;
+  }
 }
