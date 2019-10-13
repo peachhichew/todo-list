@@ -11,9 +11,10 @@ var span = document.getElementsByClassName("close")[0];
 var submitTask = document.querySelector("#submitTask");
 
 newTaskButton.onclick = function () {
-  console.log("button clicked");
   modal.style.display = "block";
   // clear the content inside the modal
+  var todoForm = document.querySelector("#todoForm");
+  todoForm.reset();
 };
 
 span.onclick = function () {
@@ -29,9 +30,6 @@ window.onclick = function (e) {
 submitTask.onclick = function () {
   modal.style.display = "none";
 };
-
-// code to update each individual todo
-var arrLength = document.getElementsByClassName("single-todo").length;
 
 var parseJSON = function parseJSON(xhr) {
   console.dir("parseJSON");
@@ -78,8 +76,8 @@ var handleResponse = function handleResponse(xhr, parseResponse) {
       break;
     case 204:
       // updated
-      responseStatus.innerHTML = "Updated todo!";
-      return;
+      responseStatus.innerHTML = "Updated todo! Refresh the todos list to see your changes.";
+      break;
     case 400:
       // bad request
       responseStatus.innerHTML = "Bad Request (missing parameters)";
@@ -95,22 +93,10 @@ var handleResponse = function handleResponse(xhr, parseResponse) {
 
   // if we are expecting a response body (not from HEAD request), parse it
   if (parseResponse) {
-    console.log("inside parseResponse block");
-    // responseStatus.style = `animation: decreaseOpacity 2s ease;
-    // animation-delay: 3s;
-    // -webkit-animation: decreaseOpacity 2s ease;
-    // -webkit-animation-delay: 3s;`;
-    // console.log("style", responseStatus.style);
     parseJSON(xhr);
     // console.log("get request");
   } else if (typeof parseResponse === "undefined") {
     var obj = JSON.parse(xhr.response);
-    // console.dir(obj);
-    // responseStatus.style = `animation: decreaseOpacity 2s ease;
-    // animation-delay: 3s;
-    // -webkit-animation: decreaseOpacity 2s ease;
-    // -webkit-animation-delay: 3s;`;
-    // console.log("style", responseStatus.style);
     responseStatus.innerHTML += "<p>" + obj.message + "</p>";
     todoLists.innerHTML += "<div class=\"single-todo\" id=\"single-todo-" + obj.id + "\">\n    <h3 class=\"taskName-content\">" + obj.taskName + "</h3>\n    <div class=\"status-and-dueDate\">\n      <p class=\"dueDate-content\">due date: " + obj.dueDate + "</p>\n      <p class=\"status-content\">status: " + obj.status + "</p>\n    </div>\n    <p class=\"taskDescription-content\">" + obj.taskDescription + "</p>\n  </div>";
   }
@@ -196,10 +182,6 @@ var filterResults = function filterResults() {
   xhr.send();
   // e.preventDefault();
   return false;
-};
-
-var test = function test() {
-  alert("meow");
 };
 
 var init = function init() {

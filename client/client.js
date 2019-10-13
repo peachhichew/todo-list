@@ -9,9 +9,10 @@ const span = document.getElementsByClassName("close")[0];
 const submitTask = document.querySelector("#submitTask");
 
 newTaskButton.onclick = () => {
-  console.log("button clicked");
   modal.style.display = "block";
   // clear the content inside the modal
+  const todoForm = document.querySelector("#todoForm");
+  todoForm.reset();
 };
 
 span.onclick = () => {
@@ -27,9 +28,6 @@ window.onclick = e => {
 submitTask.onclick = () => {
   modal.style.display = "none";
 };
-
-// code to update each individual todo
-const arrLength = document.getElementsByClassName("single-todo").length;
 
 const parseJSON = xhr => {
   console.dir("parseJSON");
@@ -105,8 +103,8 @@ const handleResponse = (xhr, parseResponse) => {
       responseStatus.innerHTML = `Todo created successfully!`;
       break;
     case 204: // updated
-      responseStatus.innerHTML = `Updated todo!`;
-      return;
+      responseStatus.innerHTML = `Updated todo! Refresh the todos list to see your changes.`;
+      break;
     case 400: // bad request
       responseStatus.innerHTML = `Bad Request (missing parameters)`;
       break;
@@ -120,22 +118,10 @@ const handleResponse = (xhr, parseResponse) => {
 
   // if we are expecting a response body (not from HEAD request), parse it
   if (parseResponse) {
-    console.log("inside parseResponse block");
-    // responseStatus.style = `animation: decreaseOpacity 2s ease;
-    // animation-delay: 3s;
-    // -webkit-animation: decreaseOpacity 2s ease;
-    // -webkit-animation-delay: 3s;`;
-    // console.log("style", responseStatus.style);
     parseJSON(xhr);
     // console.log("get request");
   } else if (typeof parseResponse === "undefined") {
     const obj = JSON.parse(xhr.response);
-    // console.dir(obj);
-    // responseStatus.style = `animation: decreaseOpacity 2s ease;
-    // animation-delay: 3s;
-    // -webkit-animation: decreaseOpacity 2s ease;
-    // -webkit-animation-delay: 3s;`;
-    // console.log("style", responseStatus.style);
     responseStatus.innerHTML += `<p>${obj.message}</p>`;
     todoLists.innerHTML += `<div class="single-todo" id="single-todo-${obj.id}">
     <h3 class="taskName-content">${obj.taskName}</h3>
@@ -222,10 +208,6 @@ const filterResults = () => {
   xhr.send();
   // e.preventDefault();
   return false;
-};
-
-const test = () => {
-  alert("meow");
 };
 
 const init = () => {
