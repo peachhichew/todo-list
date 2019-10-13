@@ -35,7 +35,7 @@ const respondJSONMeta = (request, response, status) => {
   response.end();
 };
 
-const filterByStatus = (status, objKeys, todos) => {
+const filterByStatus = (status, objKeys) => {
   for (let i = 0; i < objKeys.length; i++) {
     let taskName = todos[objKeys[i]];
     if (todos[objKeys[i]]["status"] === status) {
@@ -74,17 +74,17 @@ const getTodos = (request, response, params) => {
     return respondJSON(request, response, 200, responseJSON);
   } else if (params.status === "not-started") {
     newTodos = {};
-    filterByStatus("not started", objKeys, todos, newTodos);
+    filterByStatus("not started", objKeys);
     responseJSON = { newTodos };
     console.log("return responseJSON: ", responseJSON);
   } else if (params.status === "in-progress") {
     newTodos = {};
-    filterByStatus("in progress", objKeys, todos, newTodos);
+    filterByStatus("in progress", objKeys);
     responseJSON = { newTodos };
     console.log("responseJSON: ", responseJSON);
   } else if (params.status === "done") {
     newTodos = {};
-    filterByStatus("done", objKeys, todos, newTodos);
+    filterByStatus("done", objKeys);
     responseJSON = { newTodos };
     console.log("responseJSON: ", responseJSON);
   }
