@@ -1,17 +1,18 @@
 // https://www.w3schools.com/howto/howto_js_todolist.asp
 // https://www.w3schools.com/css/css_form.asp
 // https://www.w3schools.com/howto/howto_css_modals.asp
+// https://stackoverflow.com/questions/15860683/onclick-event-in-a-for-loop
 
 // code for modal
 const modal = document.querySelector("#taskModal");
 const newTaskButton = document.querySelector("#newTaskButton");
 const span = document.getElementsByClassName("close")[0];
 const submitTask = document.querySelector("#submitTask");
+const todoForm = document.querySelector("#todoForm");
 
 newTaskButton.onclick = () => {
   modal.style.display = "block";
   // clear the content inside the modal
-  const todoForm = document.querySelector("#todoForm");
   todoForm.reset();
 };
 
@@ -29,12 +30,44 @@ submitTask.onclick = () => {
   modal.style.display = "none";
 };
 
+const singleTodo = document.getElementsByClassName("single-todo");
+let taskName, dueDate, statusInModal, descrip;
+for (let i = 0; i < singleTodo.length; i++) {
+  singleTodo[i].onclick = () => {
+    console.log("i: ", i);
+    todoForm.reset();
+    modal.style.display = "block";
+    taskName = document.querySelector("#taskName");
+    taskName.value = document.getElementsByClassName(
+      "taskName-content"
+    )[0].innerHTML;
+    dueDate = document.querySelector("#dueDate");
+    dueDate.value = document
+      .getElementsByClassName("dueDate-content")[0]
+      .innerHTML.replace("due date: ", "");
+    statusInModal = document.querySelector("#status");
+    statusInModal.value = document
+      .getElementsByClassName("status-content")[0]
+      .innerHTML.replace("status: ", "");
+    descrip = document.querySelector("#taskDescription");
+    descrip.value = document.getElementsByClassName(
+      "taskDescription-content"
+    )[0].innerHTML;
+  };
+}
+
 const parseJSON = xhr => {
   console.dir("parseJSON");
   const obj = JSON.parse(xhr.response);
   console.dir(obj);
 
   const todoLists = document.querySelector("#todo-lists");
+  const responseStatus = document.querySelector("#response-status");
+
+  // if message in response, add it to the screen
+  if (obj.message) {
+    responseStatus.innerHTML += `<p>${obj.message}</p>`;
+  }
 
   if (obj.todos) {
     console.log("inside obj.todos");
@@ -60,6 +93,31 @@ const parseJSON = xhr => {
         }</p>
       </div>`;
     }
+
+    for (let i = 0; i < singleTodo.length; i++)
+      (function(i) {
+        singleTodo[i].onclick = function() {
+          console.log("i: ", i);
+          todoForm.reset();
+          modal.style.display = "block";
+          taskName = document.querySelector("#taskName");
+          taskName.value = document.getElementsByClassName("taskName-content")[
+            i
+          ].innerHTML;
+          dueDate = document.querySelector("#dueDate");
+          dueDate.value = document
+            .getElementsByClassName("dueDate-content")
+            [i].innerHTML.replace("due date: ", "");
+          statusInModal = document.querySelector("#status");
+          statusInModal.value = document
+            .getElementsByClassName("status-content")
+            [i].innerHTML.replace("status: ", "");
+          descrip = document.querySelector("#taskDescription");
+          descrip.value = document.getElementsByClassName(
+            "taskDescription-content"
+          )[i].innerHTML;
+        };
+      })(i);
   }
 
   if (obj.newTodos) {
@@ -88,6 +146,31 @@ const parseJSON = xhr => {
         }</p>
       </div>`;
     }
+
+    for (var i = 0; i < singleTodo.length; i++)
+      (function(i) {
+        singleTodo[i].onclick = function() {
+          console.log("i: ", i);
+          todoForm.reset();
+          modal.style.display = "block";
+          taskName = document.querySelector("#taskName");
+          taskName.value = document.getElementsByClassName("taskName-content")[
+            i
+          ].innerHTML;
+          dueDate = document.querySelector("#dueDate");
+          dueDate.value = document
+            .getElementsByClassName("dueDate-content")
+            [i].innerHTML.replace("due date: ", "");
+          statusInModal = document.querySelector("#status");
+          statusInModal.value = document
+            .getElementsByClassName("status-content")
+            [i].innerHTML.replace("status: ", "");
+          descrip = document.querySelector("#taskDescription");
+          descrip.value = document.getElementsByClassName(
+            "taskDescription-content"
+          )[i].innerHTML;
+        };
+      })(i);
   }
 };
 
@@ -104,7 +187,7 @@ const handleResponse = (xhr, parseResponse) => {
       break;
     case 204: // updated
       responseStatus.innerHTML = `Updated todo! Refresh the todos list to see your changes.`;
-      break;
+      return;
     case 400: // bad request
       responseStatus.innerHTML = `Bad Request (missing parameters)`;
       break;

@@ -4,7 +4,7 @@ const todos = {
   "print resume": {
     id: count,
     taskName: "print resume",
-    dueDate: "2019-25-09",
+    dueDate: "2019-09-25",
     status: "not started",
     taskDescription: "head to library to print 20 copies of resume"
   }
