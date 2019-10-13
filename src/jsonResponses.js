@@ -5,7 +5,7 @@ const todos = {
     id: count,
     taskName: "print resume",
     dueDate: "2019-25-09",
-    status: "not started",
+    status: "not-started",
     taskDescription: "head to library to print 20 copies of resume"
   }
 };
@@ -34,9 +34,8 @@ const respondJSONMeta = (request, response, status) => {
 };
 
 const getTodos = (request, response, params) => {
-  let responseJSON = {
-    todos
-  };
+  let responseJSON, newTodos;
+  const objKeys = Object.keys(todos);
 
   if (
     params.status !== "all" &&
@@ -52,8 +51,44 @@ const getTodos = (request, response, params) => {
     return respondJSON(request, response, 400, responseJSON);
   }
 
+  if (params.status === "all") {
+    responseJSON = { todos };
+    console.log("responseJSON: ", responseJSON);
+    return respondJSON(request, response, 200, responseJSON);
+  } else if (params.status === "not-started") {
+    newTodos = {};
+    filterByStatus("not-started", objKeys, todos, newTodos);
+    responseJSON = { newTodos };
+    console.log("return responseJSON: ", responseJSON);
+  } else if (params.status === "in-progress") {
+    newTodos = {};
+    filterByStatus("in-progress", objKeys, todos, newTodos);
+    responseJSON = { newTodos };
+    console.log("responseJSON: ", responseJSON);
+  } else if (params.status === "done") {
+    newTodos = {};
+    filterByStatus("done", objKeys, todos, newTodos);
+    responseJSON = { newTodos };
+    console.log("responseJSON: ", responseJSON);
+  }
+
   // return status code 200 with message
   return respondJSON(request, response, 200, responseJSON);
+};
+
+const filterByStatus = (status, objKeys, todos, newTodos) => {
+  for (let i = 0; i < objKeys.length; i++) {
+    let taskName = todos[objKeys[i]];
+    if (todos[objKeys[i]]["status"] === status) {
+      newTodos[taskName["taskName"]] = {};
+      newTodos[taskName["taskName"]].id = taskName["id"];
+      newTodos[taskName["taskName"]].taskName = taskName["taskName"];
+      newTodos[taskName["taskName"]].dueDate = taskName["dueDate"];
+      newTodos[taskName["taskName"]].status = taskName["status"];
+      newTodos[taskName["taskName"]].taskDescription =
+        taskName["taskDescription"];
+    }
+  }
 };
 
 // get meta info about the users and return a 200 status code

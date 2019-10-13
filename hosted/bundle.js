@@ -61,6 +61,7 @@ var parseJSON = function parseJSON(xhr, content) {
   }
 
   if (obj.todos) {
+    console.log("inside obj.todos");
     var objKeys = Object.keys(obj["todos"]);
     // iterate through the todos object
     // for each key that exists, add a new todo element to the screen
@@ -76,6 +77,17 @@ var parseJSON = function parseJSON(xhr, content) {
     //     console.log("index: " + i);
     //   });
     // }
+  }
+
+  if (obj.newTodos) {
+    console.log("inside obj.newTodos");
+    var _objKeys = Object.keys(obj["newTodos"]);
+    // iterate through the todos object
+    // for each key that exists, add a new todo element to the screen
+    todoLists.innerHTML = "";
+    for (var _i = 0; _i < Object.keys(obj["newTodos"]).length; _i++) {
+      todoLists.innerHTML += "<div class=\"single-todo\" id=\"single-todo-" + obj.newTodos[_objKeys[_i]]["id"] + "\">\n        <h3 class=\"taskName-content\">" + obj.newTodos[_objKeys[_i]]["taskName"] + "</h3>\n        <div class=\"status-and-dueDate\">\n          <p class=\"dueDate-content\">due date: " + obj.newTodos[_objKeys[_i]]["dueDate"] + "</p>\n          <p class=\"status-content\">status: " + obj.newTodos[_objKeys[_i]]["status"] + "</p>\n        </div>\n        <p class=\"taskDescription-content\">" + obj.newTodos[_objKeys[_i]]["taskDescription"] + "</p>\n      </div>";
+    }
   }
 };
 
@@ -111,6 +123,7 @@ var handleResponse = function handleResponse(xhr, parseResponse) {
 
   // if we are expecting a response body (not from HEAD request), parse it
   if (parseResponse) {
+    console.log("inside parseResponse block");
     parseJSON(xhr, content);
     // console.log("get request");
   } else if (typeof parseResponse === "undefined") {
@@ -186,6 +199,8 @@ var requestUpdate = function requestUpdate(e, loadTodos) {
 };
 
 var filterResults = function filterResults() {
+  // let todoLists = document.querySelector("#todo-lists");
+  // todoLists.innerHTML = "";
   var url = document.querySelector("#filter-dropdown").value;
   var method = document.querySelector("#filter-results").getAttribute("method");
   console.log("url: ", url);

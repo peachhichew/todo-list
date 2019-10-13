@@ -52,6 +52,8 @@ const handleGet = (request, response, parsedUrl, params) => {
     htmlHandler.getBundle(request, response);
   } else if (parsedUrl.pathname === "/") {
     htmlHandler.getIndex(request, response);
+  } else if (parsedUrl.pathname === "/clean-minimalist-office.jpg") {
+    htmlHandler.getBgImg(request, response);
   } else if (parsedUrl.pathname === "/badRequest") {
     jsonHandler.badRequest(request, response, params);
   } else {

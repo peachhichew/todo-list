@@ -59,6 +59,7 @@ const parseJSON = (xhr, content) => {
   }
 
   if (obj.todos) {
+    console.log("inside obj.todos");
     const objKeys = Object.keys(obj["todos"]);
     // iterate through the todos object
     // for each key that exists, add a new todo element to the screen
@@ -90,6 +91,34 @@ const parseJSON = (xhr, content) => {
     //   });
     // }
   }
+
+  if (obj.newTodos) {
+    console.log("inside obj.newTodos");
+    const objKeys = Object.keys(obj["newTodos"]);
+    // iterate through the todos object
+    // for each key that exists, add a new todo element to the screen
+    todoLists.innerHTML = "";
+    for (let i = 0; i < Object.keys(obj["newTodos"]).length; i++) {
+      todoLists.innerHTML += `<div class="single-todo" id="single-todo-${
+        obj.newTodos[objKeys[i]]["id"]
+      }">
+        <h3 class="taskName-content">${
+          obj.newTodos[objKeys[i]]["taskName"]
+        }</h3>
+        <div class="status-and-dueDate">
+          <p class="dueDate-content">due date: ${
+            obj.newTodos[objKeys[i]]["dueDate"]
+          }</p>
+          <p class="status-content">status: ${
+            obj.newTodos[objKeys[i]]["status"]
+          }</p>
+        </div>
+        <p class="taskDescription-content">${
+          obj.newTodos[objKeys[i]]["taskDescription"]
+        }</p>
+      </div>`;
+    }
+  }
 };
 
 const handleResponse = (xhr, parseResponse) => {
@@ -119,6 +148,7 @@ const handleResponse = (xhr, parseResponse) => {
 
   // if we are expecting a response body (not from HEAD request), parse it
   if (parseResponse) {
+    console.log("inside parseResponse block");
     parseJSON(xhr, content);
     // console.log("get request");
   } else if (typeof parseResponse === "undefined") {
@@ -195,6 +225,8 @@ const requestUpdate = (e, loadTodos) => {
 };
 
 const filterResults = () => {
+  // let todoLists = document.querySelector("#todo-lists");
+  // todoLists.innerHTML = "";
   const url = document.querySelector("#filter-dropdown").value;
   const method = document
     .querySelector("#filter-results")
