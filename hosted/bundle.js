@@ -1,11 +1,10 @@
 "use strict";
 
-// https://www.w3schools.com/howto/howto_js_todolist.asp
-// https://www.w3schools.com/css/css_form.asp
+// Creating a CSS Modal:
 // https://www.w3schools.com/howto/howto_css_modals.asp
+// Attaching onclick event using a for loop:
 // https://stackoverflow.com/questions/15860683/onclick-event-in-a-for-loop
 
-// code for modal
 var modal = document.querySelector("#taskModal");
 var newTaskButton = document.querySelector("#newTaskButton");
 var span = document.getElementsByClassName("close")[0];
@@ -32,9 +31,11 @@ submitTask.onclick = function () {
   modal.style.display = "none";
 };
 
+// display all todos from the JSON that is returned
 var displayTodos = function displayTodos(obj, objTodos, todosName, todoLists) {
   var objKeys = Object.keys(obj[todosName]);
   todoLists.innerHTML = "";
+
   for (var i = 0; i < Object.keys(obj[todosName]).length; i++) {
     todoLists.innerHTML += "<div class=\"single-todo\" id=\"single-todo-" + objTodos[objKeys[i]]["id"] + "\">\n      <h3 class=\"taskName-content\">" + objTodos[objKeys[i]]["taskName"] + "</h3>\n      <div class=\"status-and-dueDate\">\n        <p class=\"dueDate-content\">due date: " + objTodos[objKeys[i]]["dueDate"] + "</p>\n        <p class=\"status-content\">status: " + objTodos[objKeys[i]]["status"] + "</p>\n      </div>\n      <p class=\"taskDescription-content\">" + objTodos[objKeys[i]]["taskDescription"] + "</p>\n    </div>";
   }
@@ -46,6 +47,8 @@ var taskName = void 0,
     statusInModal = void 0,
     descrip = void 0;
 
+// using the data from existing todos, we want to prefill the modal
+// once the todo has been clicked
 var prefillModal = function prefillModal() {
   for (var i = 0; i < singleTodo.length; i++) {
     (function (i) {
@@ -65,6 +68,8 @@ var prefillModal = function prefillModal() {
     })(i);
   }
 };
+
+// prefill the default todo on the screen
 
 var _loop = function _loop(i) {
   singleTodo[i].onclick = function () {
@@ -99,11 +104,13 @@ var parseJSON = function parseJSON(xhr) {
     responseStatus.innerHTML += "<p>" + obj.message + "</p>";
   }
 
+  // used for filter that displays ALL todos
   if (obj.todos) {
     displayTodos(obj, obj.todos, "todos", todoLists);
     prefillModal();
   }
 
+  // used when we are filtering for todos with specific statuses
   if (obj.newTodos) {
     displayTodos(obj, obj.newTodos, "newTodos", todoLists);
     prefillModal();
@@ -143,7 +150,6 @@ var handleResponse = function handleResponse(xhr, parseResponse) {
   // if we are expecting a response body (not from HEAD request), parse it
   if (parseResponse) {
     parseJSON(xhr);
-    // console.log("get request");
   } else if (typeof parseResponse === "undefined") {
     var obj = JSON.parse(xhr.response);
     responseStatus.innerHTML += "<p>" + obj.message + "</p>";
@@ -212,12 +218,10 @@ var requestUpdate = function requestUpdate(e, loadTodos) {
   return false;
 };
 
+// send a GET request depending on what status is selected
 var filterResults = function filterResults() {
-  // let todoLists = document.querySelector("#todo-lists");
-  // todoLists.innerHTML = "";
   var url = document.querySelector("#filter-dropdown").value;
   var method = document.querySelector("#filter-results").getAttribute("method");
-  console.log("url: ", url);
 
   // create an ajax request
   var xhr = new XMLHttpRequest();

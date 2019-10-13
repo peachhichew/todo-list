@@ -1,3 +1,6 @@
+/* Creating a CSS Modal: 
+https://www.w3schools.com/howto/howto_css_modals.asp */
+
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap");
 
 html,
@@ -141,7 +144,6 @@ textarea:focus {
 }
 
 .todo-content {
-  /* border: 1px solid black; */
   display: flex;
   flex-flow: row wrap;
   justify-content: space-evenly;
@@ -149,9 +151,7 @@ textarea:focus {
 
 .single-todo {
   border: 1px solid #ccc;
-  /* width: 400px; */
   padding: 0px 20px 20px 20px;
-  /* margin-right: 15px; */
   margin-bottom: 15px;
   flex-basis: 40%;
   border-radius: 5px;
@@ -164,7 +164,6 @@ textarea:focus {
 }
 
 .status-and-dueDate {
-  /* border: 1px solid green; */
   display: flex;
 }
 

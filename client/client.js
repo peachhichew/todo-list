@@ -1,9 +1,8 @@
-// https://www.w3schools.com/howto/howto_js_todolist.asp
-// https://www.w3schools.com/css/css_form.asp
+// Creating a CSS Modal:
 // https://www.w3schools.com/howto/howto_css_modals.asp
+// Attaching onclick event using a for loop:
 // https://stackoverflow.com/questions/15860683/onclick-event-in-a-for-loop
 
-// code for modal
 const modal = document.querySelector("#taskModal");
 const newTaskButton = document.querySelector("#newTaskButton");
 const span = document.getElementsByClassName("close")[0];
@@ -30,9 +29,11 @@ submitTask.onclick = () => {
   modal.style.display = "none";
 };
 
+// display all todos from the JSON that is returned
 const displayTodos = (obj, objTodos, todosName, todoLists) => {
   const objKeys = Object.keys(obj[todosName]);
   todoLists.innerHTML = "";
+
   for (let i = 0; i < Object.keys(obj[todosName]).length; i++) {
     todoLists.innerHTML += `<div class="single-todo" id="single-todo-${
       objTodos[objKeys[i]]["id"]
@@ -54,6 +55,8 @@ const displayTodos = (obj, objTodos, todosName, todoLists) => {
 const singleTodo = document.getElementsByClassName("single-todo");
 let taskName, dueDate, statusInModal, descrip;
 
+// using the data from existing todos, we want to prefill the modal
+// once the todo has been clicked
 const prefillModal = () => {
   for (let i = 0; i < singleTodo.length; i++)
     (function(i) {
@@ -81,6 +84,7 @@ const prefillModal = () => {
     })(i);
 };
 
+// prefill the default todo on the screen
 for (let i = 0; i < singleTodo.length; i++) {
   singleTodo[i].onclick = () => {
     console.log("i: ", i);
@@ -118,11 +122,13 @@ const parseJSON = xhr => {
     responseStatus.innerHTML += `<p>${obj.message}</p>`;
   }
 
+  // used for filter that displays ALL todos
   if (obj.todos) {
     displayTodos(obj, obj.todos, "todos", todoLists);
     prefillModal();
   }
 
+  // used when we are filtering for todos with specific statuses
   if (obj.newTodos) {
     displayTodos(obj, obj.newTodos, "newTodos", todoLists);
     prefillModal();
@@ -157,7 +163,6 @@ const handleResponse = (xhr, parseResponse) => {
   // if we are expecting a response body (not from HEAD request), parse it
   if (parseResponse) {
     parseJSON(xhr);
-    // console.log("get request");
   } else if (typeof parseResponse === "undefined") {
     const obj = JSON.parse(xhr.response);
     responseStatus.innerHTML += `<p>${obj.message}</p>`;
@@ -227,14 +232,12 @@ const requestUpdate = (e, loadTodos) => {
   return false;
 };
 
+// send a GET request depending on what status is selected
 const filterResults = () => {
-  // let todoLists = document.querySelector("#todo-lists");
-  // todoLists.innerHTML = "";
   const url = document.querySelector("#filter-dropdown").value;
   const method = document
     .querySelector("#filter-results")
     .getAttribute("method");
-  console.log("url: ", url);
 
   // create an ajax request
   const xhr = new XMLHttpRequest();
