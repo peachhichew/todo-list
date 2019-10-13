@@ -10,6 +10,8 @@ const todos = {
   }
 };
 
+let newTodos;
+
 // function to response with a json object
 const respondJSON = (request, response, status, object) => {
   const headers = {
@@ -33,8 +35,23 @@ const respondJSONMeta = (request, response, status) => {
   response.end();
 };
 
+const filterByStatus = (status, objKeys, todos) => {
+  for (let i = 0; i < objKeys.length; i++) {
+    let taskName = todos[objKeys[i]];
+    if (todos[objKeys[i]]["status"] === status) {
+      newTodos[taskName["taskName"]] = {};
+      newTodos[taskName["taskName"]].id = taskName["id"];
+      newTodos[taskName["taskName"]].taskName = taskName["taskName"];
+      newTodos[taskName["taskName"]].dueDate = taskName["dueDate"];
+      newTodos[taskName["taskName"]].status = taskName["status"];
+      newTodos[taskName["taskName"]].taskDescription =
+        taskName["taskDescription"];
+    }
+  }
+};
+
 const getTodos = (request, response, params) => {
-  let responseJSON, newTodos;
+  let responseJSON;
   const objKeys = Object.keys(todos);
 
   if (
@@ -74,21 +91,6 @@ const getTodos = (request, response, params) => {
 
   // return status code 200 with message
   return respondJSON(request, response, 200, responseJSON);
-};
-
-const filterByStatus = (status, objKeys, todos, newTodos) => {
-  for (let i = 0; i < objKeys.length; i++) {
-    let taskName = todos[objKeys[i]];
-    if (todos[objKeys[i]]["status"] === status) {
-      newTodos[taskName["taskName"]] = {};
-      newTodos[taskName["taskName"]].id = taskName["id"];
-      newTodos[taskName["taskName"]].taskName = taskName["taskName"];
-      newTodos[taskName["taskName"]].dueDate = taskName["dueDate"];
-      newTodos[taskName["taskName"]].status = taskName["status"];
-      newTodos[taskName["taskName"]].taskDescription =
-        taskName["taskDescription"];
-    }
-  }
 };
 
 // get meta info about the users and return a 200 status code
