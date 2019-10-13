@@ -4,6 +4,7 @@
 // https://www.w3schools.com/howto/howto_css_modals.asp
 // Attaching onclick event using a for loop:
 // https://stackoverflow.com/questions/15860683/onclick-event-in-a-for-loop
+// Background image from: https://unsplash.com/photos/PypjzKTUqLo
 
 var modal = document.querySelector("#taskModal");
 var newTaskButton = document.querySelector("#newTaskButton");
